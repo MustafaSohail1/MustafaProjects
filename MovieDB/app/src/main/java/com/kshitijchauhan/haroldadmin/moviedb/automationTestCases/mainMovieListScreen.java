@@ -1,4 +1,4 @@
-package com.kshitijchauhan.haroldadmin.moviedb;
+package com.kshitijchauhan.haroldadmin.moviedb.automationTestCases;
 
 import org.junit.Before;
 import org.openqa.selenium.By;

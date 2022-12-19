@@ -1,4 +1,4 @@
-package com.kshitijchauhan.haroldadmin.moviedb
+package com.kshitijchauhan.haroldadmin.moviedb.automationTestCases
 
 import android.app.Application
 import com.kshitijchauhan.haroldadmin.moviedb.di.applicationModule
