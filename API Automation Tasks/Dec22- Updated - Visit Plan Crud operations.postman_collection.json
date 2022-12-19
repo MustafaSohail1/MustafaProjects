@@ -1,0 +1,2596 @@
+{
+	"info": {
+		"_postman_id": "b5070191-6dd8-4c5c-8084-d4738ffbc810",
+		"name": "Dec22- Updated - Visit Plan Crud operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10191490"
+	},
+	"item": [
+		{
+			"name": "GET - All Forms",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"pm.environment.set(\"protocol\",\"https\");",
+							"pm.environment.set(\"gpEUInstance\",\"visit-plan-exp-api-dev1-eu-de.de-c1.cloudhub.io\");",
+							"pm.environment.set(\"gpFormURL\",\"dev1-platform.s37dev.com/api/v1/platform/form\");",
+							"pm.environment.set(\"gpVisitPlanURL\",\"api/v1/platform/visit-plan\");",
+							"pm.environment.set(\"trialId\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"",
+							"var jsonData = pm.response.json();",
+							"var len = jsonData.templates.length;",
+							"",
+							"// Get all Forms",
+							"",
+							"for (var VisitFormList=1; VisitFormList<6; VisitFormList++){",
+							"    for (var i=0; i < len; i++) {",
+							"        if (jsonData.templates[i].status === \"ready\" && jsonData.templates[i].formType == \"ecrf\") {",
+							"            pm.environment.set(\"vpExpectedVisitFormListFormID0\"+VisitFormList, jsonData.templates[i].id);",
+							"            pm.environment.set(\"vpExpectedVisitFormListFormTitle0\"+VisitFormList, jsonData.templates[i].title);",
+							"            pm.environment.set(\"vpExpectedVisitFormListFormVersion0\"+VisitFormList, jsonData.templates[i].version);",
+							"            pm.environment.set(\"vpExpectedVisitFormListDisplayOrder0\"+VisitFormList, VisitFormList);",
+							"            pm.environment.set(\"vpExpectedVisitFormListDefinationURI0\"+VisitFormList, \"Questionnaire/\"+jsonData.templates[i].id+\"/\"+i);",
+							"        }",
+							"        else",
+							"            VisitFormList++;",
+							"    }",
+							"}",
+							"",
+							"// Adhoc",
+							"",
+							"pm.environment.set(\"from\",0);",
+							"               ",
+							"pm.test(\"Populate Addhoc Forms\", function () {",
+							"    for (var Addhoc=1; Addhoc<=3; Addhoc++){",
+							"        for (var i = pm.environment.get(\"from\"); i < len; i++) {",
+							"            if (jsonData.templates[i].status === \"ready\" && jsonData.templates[i].formType === \"ecrf\") {",
+							"                pm.environment.set(\"vpAdhocFormID0\"+Addhoc, jsonData.templates[i].id);",
+							"                pm.environment.set(\"vpAdhocFormTitle0\"+Addhoc, jsonData.templates[i].title);",
+							"                pm.environment.set(\"vpAdhocFormVersion0\"+Addhoc, jsonData.templates[i].version);",
+							"                pm.environment.set(\"vpAdhocFormDisplayOrder0\"+Addhoc, Addhoc);",
+							"                pm.environment.set(\"vpAdhocSiteID0\"+Addhoc, \"{{$guid}}\");",
+							"                pm.environment.set(\"vpAdhocSiteName0\"+Addhoc, \"VP Site AdHoc Name0\"+Addhoc);",
+							"            }",
+							"            else",
+							"                Addhoc--;",
+							"            pm.environment.set(\"from\", i+1);",
+							"            break;",
+							"        }",
+							"    }",
+							"});",
+							"",
+							"//Ongoing loop",
+							"pm.environment.set(\"from\",0);",
+							"pm.test(\"Populate OnGoing\", function () {",
+							"    for (var OnGoing=1; OnGoing<=3; OnGoing++){",
+							"        for (var i = pm.environment.get(\"from\"); i < len; i++) {",
+							"            if (jsonData.templates[i].status === \"ready\" && jsonData.templates[i].formType === \"ecrf\") {",
+							"                pm.environment.set(\"vpOngoingGroupID0\"+OnGoing, jsonData.templates[i].id);",
+							"                pm.environment.set(\"vpOngoingGroupTitle0\"+OnGoing, jsonData.templates[i].title);",
+							"                pm.environment.set(\"vpOngoingGroupOID0\"+OnGoing, OnGoing);",
+							"                pm.environment.set(\"vpOngoingGroupDisplayOrder0\"+OnGoing, OnGoing);",
+							"            }",
+							"            else",
+							"                OnGoing--;",
+							"            pm.environment.set(\"from\", i+1);",
+							"            break;",
+							"        }",
+							"    }",
+							"});",
+							"",
+							"//Ongoing forms loop",
+							"",
+							"pm.environment.set(\"from\",0);",
+							"pm.test(\"Populate OnGoing Forms\", function () {",
+							"    for (var OnGoingForms=1; OnGoingForms<=3; OnGoingForms++){",
+							"        for (var i = pm.environment.get(\"from\"); i < len; i++) {",
+							"            if (jsonData.templates[i].status === \"ready\" && jsonData.templates[i].formType === \"ecrf\") {",
+							"                pm.environment.set(\"vpOngoingGroupFormID0\"+OnGoingForms, jsonData.templates[i].id);",
+							"                pm.environment.set(\"vpOngoingGroupFormTitle0\"+OnGoingForms, jsonData.templates[i].title);",
+							"                pm.environment.set(\"vpOngoingGroupFormVersion0\"+OnGoingForms, jsonData.templates[i].version);",
+							"                pm.environment.set(\"vpOngoingGroupFormDisplayOrder0\"+OnGoingForms, OnGoingForms);",
+							"            }",
+							"            else",
+							"                OnGoingForms--;",
+							"            pm.environment.set(\"from\", i+1);",
+							"            break;",
+							"        }",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJEVVdIbzBnMTFFNHVta3hwcGhtaFFVa190OG1la0FSQWxXN285djRqSUNnIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjBSWGdDYkpNQWs1WFB6b1VNbUVGRVlvbTJQaFBwdXVLdmxqMG40MFVyR2MiLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2Njk2MzU4NzcsImV4cCI6MTY2OTcyMjI3NywiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxOGpibWdyazdXOE9tTzBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY2OTYzNTg3NSwic3ViIjoiTVNEYXRhRGVzaWduZXJEZXYiLCJhd3NSZWdpb24iOiJldS1jZW50cmFsLTEiLCJzZXNzaW9uUGVybWlzc2lvbnMiOlsiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwiZWRpdFN0YW5kYXJkVmFyaWFibGVzIiwiZWRpdFN0dWR5Tm90aWZpY2F0aW9ucyIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImxpc3RTY2hlZHVsZVRlbXBsYXRlcyIsImxpc3RTaXRlcyIsImxpc3RUcmlhbHMiLCJtYW5hZ2VTY2hlZHVsZVRlbXBsYXRlcyIsIm1hbmFnZVNpdGVzIiwibWFuYWdlVmlzaXRQbGFuIiwidmlld0Zvcm1MaWJyYXJ5Iiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJ2aWV3U3RhbmRhcmRWYXJpYWJsZXMiLCJ2aWV3U3R1ZHkiLCJ2aWV3VGVuYW50Iiwidmlld1RyaWFsRmVhdHVyZXMiLCJ2aWV3VmlzaXRQbGFuTGlicmFyeSJdLCJ0ZW5hbnRVdWlkcyI6WyJmMmFhYzU1Ni0zM2Y0LTA2ZDUtM2NhYi03ZTJiMTJlMGE2NTYiXSwibXVsZVJlZ2lvbiI6ImRlLWMxIiwidGVuYW50Um9sZXMiOlsiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9EYXRhRGVzaWduZXIiXSwidXNlclV1aWQiOiJjMTY5ZDBhZi03ZGY1LTQyODItYTYzMi1kNjhiY2E4NDQ4MTMiLCJ0ZW5hbnRJZCI6Imxva2kiLCJzZXNzaW9uUm9sZXMiOlsiRGF0YURlc2lnbmVyIl0sImRiSG9zdCI6ImRldjEtcGxhdGZvcm0tZ2xvYmFsLXByaW1hcnktY2x1c3Rlci1pbnN0YW5jZS5jMHNxcHJkamZramkuZXUtY2VudHJhbC0xLnJkcy5hbWF6b25hd3MuY29tIiwiYXdzUm9sZSI6ImFybjphd3M6aWFtOjoxMjU5MDA1MDU5ODQ6cm9sZS9kZXYxLWV1LWRlLWxva2ktdGVuYW50LXJvbGUifQ.YsK1SAKBF9w69-eGPNCkVIaoqpI5-Q0sSlvLKRlD2TkrI_fAfmtm2T1E5t75gRTCNd9ahExWfX772aGHRFj5el9FkTn6cWJZ2pj1CN9q9-SdLDVmlqkRQ42jTI-qMaxW2H7Pw4xgwwOdPy3fT0O3zfc8n6dXw7f-d1jd9C183Q3nZnHTW30skYz2Z0TRPTgJBPxO-DaXSzLmw5mNmzX4PVH1Bms1c5Aj2201U327YGpkixSXRIvApZ3x2LYamKLOUWvpnJYvsMYev0H1UfD77KOS3InXNG2iYWdlLrERuzX8aRrxksCbkGQWS0nbETwi2uqFj_tZv5sv1e-zAWoCzg",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|mustafa|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{protocol}}://{{gpFormURL}}/trials/{{trialId}}/template?format=json-schema&start=1&limit=10&state=ready",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpFormURL}}"
+					],
+					"path": [
+						"trials",
+						"{{trialId}}",
+						"template"
+					],
+					"query": [
+						{
+							"key": "format",
+							"value": "json-schema"
+						},
+						{
+							"key": "start",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "state",
+							"value": "ready"
+						},
+						{
+							"key": "state",
+							"value": "draft",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - Create a Visit Plan - SSE types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response URL\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"api/v1/platform/visit-plan/trials/\"+pm.environment.get(\"trialId\")+\"/visit-plan/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response Message\", function () {",
+							"    pm.expect(jsonData.message).to.eql(\"Visit Plan created successfully.\");",
+							"});",
+							"",
+							"pm.environment.set(\"visitPlanId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var visitTypeECONSENT = \"eConsent\";",
+							"var visitTypeUNSCHEDULED = \"unscheduled\";",
+							"var visitTypeSSE = [\"screening\",\"eligibility\",\"studyPeriod\"];",
+							"var visitCount = 5;",
+							"const RandomNumbers = '123456789';",
+							"var status = [\"draft\"];",
+							"const characters =\"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\";",
+							"var forceFormType = \"epro\";",
+							"var formExpirationType = [\"NEVER\", \"USE_TIME_OF_DAY\", \"1_HOUR\", \"2_HOURS\", \"3_HOURS\", \"4_HOURS\", \"5_HOURS\", \"6_HOURS\", \"7_HOURS\", \"8_HOURS\", \"9_HOURS\", \"10_HOURS\", \"11_HOURS\", \"12_HOURS\", \"13_HOURS\", \"14_HOURS\", \"15_HOURS\", \"16_HOURS\", \"17_HOURS\", \"18_HOURS\", \"19_HOURS\", \"20_HOURS\", \"21_HOURS\", \"22_HOURS\", \"23_HOURS\", \"1_DAY\", \"2_DAYS\", \"3_DAYS\", \"4_DAYS\", \"5_DAYS\", \"6_DAYS\", \"7_DAYS\"];",
+							"",
+							"pm.environment.set(\"int\", _.random(0, 100000));",
+							"",
+							"function generateString(result) {",
+							"    var result = \"\";",
+							"    for ( var i = 1; i <= characters.length; i++ ) {",
+							"       result += characters.charAt(Math.floor(Math.random() * characters));",
+							"     }",
+							"     return result;",
+							"}",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"function getRandomNumbers(){",
+							"    return RandomNumbers[getRandomInt(RandomNumbers.length)];",
+							"}",
+							"function randomVisitTypeSSE() {",
+							"  return visitTypeSSE[getRandomInt(visitTypeSSE.length)];",
+							"}",
+							"",
+							"function randomStatus() {",
+							"  return status[getRandomInt(status.length)];",
+							"}",
+							"",
+							"function randomFormExpirationType(){",
+							"    return formExpirationType[getRandomInt(formExpirationType.length)];",
+							"}",
+							"// visit plan",
+							"",
+							"pm.environment.set(\"vpExpectedVisitTypeUNSCHEDULED\", visitTypeUNSCHEDULED);",
+							"pm.environment.set(\"vpExpectedVisitTypeECONSENT\", visitTypeECONSENT);",
+							"",
+							"pm.environment.set(\"vpTitle\", \"VISIT PLAN TITLE - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpDescription\", \"VISIT PLAN Description - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpStatus\", randomStatus());",
+							"pm.environment.set(\"vpVersion\", getRandomInt(5));",
+							"pm.environment.set(\"vpProtocolVersion\", \"Protocol Version - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedTitle\", \"VP EXPECTED TITLE - \" + pm.environment.get(\"int\"));",
+							"",
+							"// day0",
+							"pm.environment.set(\"day0VisitId\",\"9c1414b7-4025-4d5b-9ec8-b809ddbd7794\");",
+							"pm.environment.set(\"day0VisitOId\",\"day0_visit_OId\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitTitle\",\"day0 visit_title \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFormId\",\"797a2557-ac1f-484a-8ece-9a0d0f342d5c\");",
+							"pm.environment.set(\"day0VisitFormName\",\"day0_visit_Name \"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitFormVersion\",\"day0 visit_version \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFieldDateId\",\"__S37-form-fields-aaq7gn7rith\");",
+							"pm.environment.set(\"day0VisitFieldDateName\",\"Field Name\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpGateKeeperT\",\"true\");",
+							"pm.environment.set(\"vpGateKeeperF\",\"false\");",
+							"pm.environment.set(\"econsentVisitStatusAction\",\"add\");",
+							"",
+							"// visits",
+							"for (var i=1; i<=visitCount; i++){",
+							"    pm.environment.set(\"vpExpectedVisitTitle0\"+i, \"VP VISIT TITLE 0\"+i+\" - \" + pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpExpectedVisitTypeSSE0\"+i, randomVisitTypeSSE());",
+							"    pm.environment.set(\"vpExpectedVisitOID0\"+i, \"VP_Visit_OID0\"+i+pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpExpectedVisitDisplayOrder0\"+i, getRandomInt(10));",
+							"\tpm.environment.set(\"vpExpectedVisitUUID0\"+i, \"{{$guid}}\");",
+							"",
+							"    // ------ //",
+							"",
+							"    pm.environment.set(\"vpVisitApplyOffSetUrl0\"+i, \"day\");",
+							"    pm.environment.set(\"vpVisitApplyOffSetValue0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyFromPrevVisit0\"+i, null);",
+							"    pm.environment.set(\"vpVisitApplyWindowLower0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyWindowUpper0\"+i, 0); ",
+							"}",
+							"",
+							"    pm.environment.set(\"vpExpectedVisitEconsentFormGroupID\", \"{{$guid}}\");",
+							"    pm.environment.set(\"vpExpectedFFRole\", \"Patient\");",
+							"    pm.environment.set(\"vpExpectedFFType\", forceFormType);",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeECRF\", \"ecrf\");",
+							"",
+							"",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType01\", \"DAY0\");",
+							"pm.environment.set(\"vpExpectedAVBasedWindowLower\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowUpper\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowOffSet\", getRandomInt(5));",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType02\", \"VISIT_WINDOW\");\t",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitOID\", \"VP EXPECTED PREVIOUS VISIT OID - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitTitle\", \"VP EXPECTED PREVIOUS VISIT Title - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedAVCalType03\", \"NONE\");",
+							"",
+							"pm.environment.set(\"vpExpectedAllowMultipleSubmit\", \"true\");",
+							"",
+							"",
+							"// onGoing & adhoc forms",
+							"    pm.environment.set(\"vpOngoingGroupFormTypeECRF\", \"ecrf\");",
+							"    pm.environment.set(\"vpAdhocFormTypeEPRO\", \"epro\");",
+							"    ",
+							"// Recur forms",
+							"",
+							"pm.environment.set(\"vpRecurGroupID\", \"651c7373-99c4-466d-98c6-608a6a8d6e53\");",
+							"for (var j=1; j<=3; j++){",
+							"    pm.environment.set(\"vpRecurFormDisplayOrder0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurFormTitle0\"+j, \"VP Recur Form TITLE\"+\" - \" + pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpRecurFormVersion0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpRecurSiteID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurSiteName0\"+j, \"Recur Site Name \" + pm.environment.get(\"int\"));",
+							"}",
+							"",
+							"// ePro - Frequency",
+							"",
+							"var maxOccurence = [\"1\",\"2\",\"3\",\"4\"];",
+							"var FreqDayOfWeek = [\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\",\"SUN\"];",
+							"",
+							"\tfunction randommaxOccurence() {",
+							"\t  return maxOccurence[getRandomInt(maxOccurence.length)];",
+							"\t}",
+							"\tfunction randomFreqDayOfWeek() {",
+							"\t  return[getRandomInt(FreqDayOfWeek.length)];",
+							"\t}",
+							"",
+							"pm.environment.set(\"vpTriggerVisit\", \"VISIT\");",
+							"pm.environment.set(\"vpStartVisitOID\", \"Visit Start OID -\" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpEndVisitOID\", \"Visit End OID -\" + pm.environment.get(\"int\"));   ",
+							"pm.environment.set(\"vpFreqDaily\", \"DAILY\");",
+							"   ",
+							"pm.environment.set(\"vpFreqWeekly_On_Day\", \"WEEKLY_ON_DAY\");    ",
+							"pm.environment.set(\"vpFreqDayOfWeek_day01\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqDayOfWeek_day02\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqAfter_First_Visit\", \"WEEKLY_AFTER_FIRST_VISIT\");",
+							"pm.environment.set(\"vpFreqWeekly_After_start_Date\", \"WEEKLY_AFTER_START_DATE\"); ",
+							"",
+							"pm.environment.set(\"vpFreqStart_by_Condition\", \"WEEKLY_AFTER_CONDITION_START\"); ",
+							"pm.environment.set(\"vpTriggerCondition\", \"CONDITION\");",
+							"pm.environment.set(\"vpTriggerConditionDelay\", \"1\");   ",
+							"pm.environment.set(\"vpTriggerConditionDelayUnit\", \"d\");",
+							"",
+							"pm.environment.set(\"vpTriggerPreviousVisit\", \"PREVIOUS_VISIT\");",
+							"pm.environment.set(\"vpTriggerMaxOccurance\", randommaxOccurence());",
+							"pm.environment.set(\"vpTriggerMaxOccuranceUnit\", \"d\");    ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDate\", pm.environment.get(\"vpExpectedVisitTitle01\") +\"/\"+ pm.environment.get(\"vpExpectedVisitFormListFormTitle01\") + \"/title\");",
+							"pm.environment.set(\"vpTriggerDayAfterPreviousVisit\", \"1\");",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFormId\", pm.environment.get(\"vpExpectedVisitFormListFormID01\"));   ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateVisitOId\", pm.environment.get(\"vpExpectedVisitOID01\"));",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFieldId\", \"__S37-form-fields-\"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeAllDay\", \"ALL_DAY\");",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeTimePeriod\", \"TIME_PERIOD\");",
+							"",
+							"function fetchCurrentDate(){",
+							"        var today = new Date();",
+							"        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };",
+							"        options.timeZone = 'UTC';",
+							"        options.timeZoneName = 'short';",
+							"        var now = today.toLocaleString('en-US', options);",
+							"        return now;",
+							"}",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayStartTime\", fetchCurrentDate());",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayEndTime\", fetchCurrentDate());",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListExpirationType\", randomFormExpirationType());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJEVVdIbzBnMTFFNHVta3hwcGhtaFFVa190OG1la0FSQWxXN285djRqSUNnIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlJKUHI5R1hhcVNCWnJUM3lHMEZvTF9Yc3pmRjBaZElUQjR0dUdxNEREeWciLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2Njk0Nzg1MTYsImV4cCI6MTY2OTU2NDkxNiwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxOGpibWdyazdXOE9tTzBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY2OTQ3ODUxNSwic3ViIjoiTVNEYXRhRGVzaWduZXJEZXYiLCJhd3NSZWdpb24iOiJldS1jZW50cmFsLTEiLCJzZXNzaW9uUGVybWlzc2lvbnMiOlsiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwiZWRpdFN0YW5kYXJkVmFyaWFibGVzIiwiZWRpdFN0dWR5Tm90aWZpY2F0aW9ucyIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImxpc3RTY2hlZHVsZVRlbXBsYXRlcyIsImxpc3RTaXRlcyIsImxpc3RUcmlhbHMiLCJtYW5hZ2VTY2hlZHVsZVRlbXBsYXRlcyIsIm1hbmFnZVNpdGVzIiwibWFuYWdlVmlzaXRQbGFuIiwidmlld0Zvcm1MaWJyYXJ5Iiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJ2aWV3U3RhbmRhcmRWYXJpYWJsZXMiLCJ2aWV3U3R1ZHkiLCJ2aWV3VGVuYW50Iiwidmlld1RyaWFsRmVhdHVyZXMiLCJ2aWV3VmlzaXRQbGFuTGlicmFyeSJdLCJ0ZW5hbnRVdWlkcyI6WyJmMmFhYzU1Ni0zM2Y0LTA2ZDUtM2NhYi03ZTJiMTJlMGE2NTYiXSwibXVsZVJlZ2lvbiI6ImRlLWMxIiwidGVuYW50Um9sZXMiOlsiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9EYXRhRGVzaWduZXIiXSwidXNlclV1aWQiOiJjMTY5ZDBhZi03ZGY1LTQyODItYTYzMi1kNjhiY2E4NDQ4MTMiLCJ0ZW5hbnRJZCI6Imxva2kiLCJzZXNzaW9uUm9sZXMiOlsiRGF0YURlc2lnbmVyIl0sImRiSG9zdCI6ImRldjEtcGxhdGZvcm0tZ2xvYmFsLXByaW1hcnktY2x1c3Rlci1pbnN0YW5jZS5jMHNxcHJkamZramkuZXUtY2VudHJhbC0xLnJkcy5hbWF6b25hd3MuY29tIiwiYXdzUm9sZSI6ImFybjphd3M6aWFtOjoxMjU5MDA1MDU5ODQ6cm9sZS9kZXYxLWV1LWRlLWxva2ktdGVuYW50LXJvbGUifQ.F1-j0abYbgCB-MPr_NS4IwA7DmiOYG28wyQC-9vi47jfxc4OjaEEXdzpEqc9HXUC0ygKD1-L6kdDC-DoZuWaQnkmcr7X1TzYfrriWzQvrxqHCPFrKmNCZgdaFRYOtzHJYYfyauuHH3N0tbX11-KwWqc0yHj0vv7x7J7G-Yx7EYKs7PikH0ElQyp0IHHOLQt9vtdLyIIkUoY67rk1OzETggZqNusnsG9B82Z64QsidaDg5S-tuBs8kJtkG3mfbMqhjvGkBD-CZfrPNyjHQDmKnBz_6uEmhyEifaxe08h69897jK3ERr9WZg6wz9crrzl3jbcKzBqzNxmW2U3t7ZFjEg",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|mustafa|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"{{vpTitle}}\",\n    \"status\": \"{{vpStatus}}\",\n    \"description\": \"{{vpDescription}}\",\n    \"version\": \"{{vpVersion}}\",\n    \"protocolVersion\": \"{{vpProtocolVersion}}\",\n    \"expectedVisitPlan\": {\n        \"title\": \"{{vpExpectedVisitPlanTitle}}\",\n        \"econsentVisitStatusAction\": \"{{econsentVisitStatusAction}}\",\n        \"visits\": [\n            {\n                \"title\": \"{{vpExpectedVisitTitle01}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeSSE01}}\",\n                \"OID\": \"{{vpExpectedVisitOID01}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder01}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID01}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n            },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID01}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle01}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion01}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder01}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI01}}\",\n                            \"conditions\": []\n\n                        },\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID02}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle02}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion02}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeEPRO}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder02}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI02}}\",\n                            \"conditions\": [],\n                            \"timeOfDay\": {\n                                        \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n                                    },\n                                    \"expiration\": {\n                                        \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n                                },\n                             \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}}\n                        }\n                    ]\n                }\n            }            \n        ]\n    },\n  \"ongoingForms\": {\n    \"groups\": [\n      {\n        \"title\": \"{{vpOngoingGroupTitle01}}\",\n        \"OID\": \"{{vpOngoingGroupOID01}}\",\n        \"displayOrder\": {{vpOngoingGroupDisplayOrder01}},\n        \"forms\": [\n          {\n            \"displayOrder\": {{vpOngoingGroupFormDisplayOrder01}},\n            \"id\": \"{{vpOngoingGroupFormID01}}\",\n            \"title\": \"{{vpOngoingGroupFormTitle01}}\",\n            \"version\": \"{{vpOngoingGroupFormVersion01}}\",\n            \"formType\": \"{{vpOngoingGroupFormTypeECRF}}\"\n          }\n        ]\n      }\n    ]\n  },\n  \"adhocForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpAdhocFormDisplayOrder01}},\n        \"id\": \"{{vpAdhocFormID01}}\",\n        \"title\": \"{{vpAdhocFormTitle01}}\",\n        \"version\": \"{{vpAdhocFormVersion01}}\",\n        \"formType\": \"{{vpAdhocFormTypeEPRO}}\",\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpAdhocSiteID01}}\",\n              \"name\": \"{{vpAdhocSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpAdhocSiteID02}}\",\n              \"name\": \"{{vpAdhocSiteName02}}\"\n            }\n          ]\n        }\n      }\n    ]\n  },\n  \"recurringForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpRecurFormDisplayOrder01}},\n        \"id\": \"{{vpRecurFormID01}}\",\n        \"title\": \"{{vpRecurFormTitle01}}\",\n        \"version\": \"{{vpRecurFormVersion01}}\",\n        \"formType\": \"{{vpRecurFormTypeEPRO}}\",\n        \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}},\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpRecurSiteID01}}\",\n              \"name\": \"{{vpRecurSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpRecurSiteID02}}\",\n              \"name\": \"{{vpRecurSiteName02}}\"\n            }\n          ]\n        },\n        \"frequency\": {\n          \"frequencyType\": \"{{vpFreqDaily}}\",\n          \"trigger\": \"{{vpTriggerPreviousVisit}}\",\n          \"maxOccurence\": {{vpTriggerMaxOccurance}},\n          \"maxOccurenceUnit\": \"{{vpTriggerMaxOccuranceUnit}}\",\n          \"previousVisitDate\": \"{{vpTriggerPreviousVisitDate}}\",\n          \"previousVisitDateVisitOId\": \"{{vpTriggerPreviousVisitDateVisitOId}}\",\n          \"previousVisitDateFormId\": \"{{vpTriggerPreviousVisitDateFormId}}\",\n          \"previousVisitDateFieldId\": \"{{vpTriggerPreviousVisitDateFieldId}}\",\n          \"daysAfterPreviousVisit\": {{vpTriggerDayAfterPreviousVisit}}\n        },\n        \"timeOfDay\": {\n          \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n        },\n        \"expiration\": {\n          \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n        }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET -  Retrieve a Visit Plan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJTNGxkWlE0aHk1WDVaOVVfdng5TEdNT0RLTU10cW9JY1MwVU1xTVZmeDZVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULm8xcV9nSnV0SS0xeEZzOFFhRHpiUnRQYWlEbE92Q0NYNnVBWjJXTnM1RFUiLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NTA2NDIzNjQsImV4cCI6MTY1MDcyODc2NCwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxNmhod2ZlZTk2VEw3cTBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY1MDY0MjM2Mywic3ViIjoiTG9raURhdGFEZXNpZ25lclNhcWliIiwiYXdzUmVnaW9uIjoiZXUtY2VudHJhbC0xIiwic2Vzc2lvblBlcm1pc3Npb25zIjpbIm1hbmFnZVNjaGVkdWxlVGVtcGxhdGVzIiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJsaXN0U2NoZWR1bGVUZW1wbGF0ZXMiLCJ2aWV3VHJpYWwiLCJsaXN0VHJpYWxzIiwibWFuYWdlU2l0ZXMiLCJtYW5hZ2VGb3JtcyIsImxpc3RGb3JtcyIsInZpZXdGb3JtIiwidmlld1RyaWFsRmVhdHVyZXMiLCJtYW5hZ2VWaXNpdFBsYW4iLCJ2aWV3U2l0ZXMiLCJ2aWV3U3R1ZGllcyIsInZpZXdUZW5hbnRzIiwidmlld0Zvcm1MaWJyYXJ5IiwiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwidmlld1Zpc2l0UGxhbkxpYnJhcnkiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJhZGRGb3JtQnVpbGRlciIsImFkZFNpdGUiLCJlZGl0U2l0ZXMiLCJhZGRVc2VyIiwiZWRpdEFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybUJ1aWxkZXIiLCJlZGl0U3R1ZHkiLCJlZGl0VXNlciIsInZpZXdBY2Nlc3NSZXBvcnRzIiwidmlld0Zvcm1FeHBvcnRzIiwidmlld1JlcG9ydHMiLCJ2aWV3VXNlcnMiXSwidGVuYW50VXVpZHMiOlsiZjJhYWM1NTYtMzNmNC0wNmQ1LTNjYWItN2UyYjEyZTBhNjU2Il0sIm11bGVSZWdpb24iOiJkZS1jMSIsInRlbmFudFJvbGVzIjpbIjcwOGM0MzA3LTBkZDYtNDdjNS04YjliLTM3MWNiNTkzZWExNi8vRGF0YURlc2lnbmVyIiwiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9TdHVkeUFkbWluIiwiOTRmZTgwODItZWI4OC00MGRkLTg1ZjEtMDBkNzk2ZDRkYzRkLy9TdHVkeUFkbWluIiwiMDAwOWY3Y2QtZWI2YS00YTg5LWI1NWYtNWEyMTlkNmNlMTAzLy9TdHVkeUFkbWluIiwiOGFlMDhiZmItZGIzZi00MzM3LTk1ZjUtNDI0MzI2OGFhMTE2Ly9TdHVkeUFkbWluIiwiMjA4NzRlZGQtMTA3ZS00MGVmLTg4NjUtMzM1OTQ3NjAyMWZmLy9TdHVkeUFkbWluIiwiMmVhMjViMWEtZThkNi00NjU3LTkzY2YtZDJkZDUzODJjOThhLy9TdHVkeUFkbWluIiwiNThhZTNiYjAtOWZhZS00ZTc0LWJkMWItM2QzNmZlZDYwMWU4Ly9TdHVkeUFkbWluIiwiNDgzMTc1ZjctOTMzNi00MDM3LWJmYmMtM2ZjODY0MTMxYWE3Ly9TdHVkeUFkbWluIiwiMmQ2NjNjYmQtY2VjZS00N2M4LWIzYmMtNDNkYTI3NjRlMWY5Ly9TdHVkeUFkbWluIiwiY2M4Y2Y5ODAtNzE2Yy00MWJlLTk2NjctODM5MTAxZTA2ZjViLy9TdHVkeUFkbWluIiwiYTM5YmE1YjItMTMzZi00MzY4LTk3MTMtZDNhZWVmMzEyZDkwLy9TdHVkeUFkbWluIiwiNzhmY2Y0YWMtYTE2MC00MzkzLWE2NTctOGU3M2U1MThmYTJkLy9TdHVkeUFkbWluIiwiNGVmNWFkZTEtYTBmZS00OWRiLTkxYTMtZTM1NjA2ZDVkYWI5Ly9TdHVkeUFkbWluIiwiNjkxZTQ0ZTctNDUwMC00ZDBiLTk4MGUtODRiODljODVjZTQ4Ly9TdHVkeUFkbWluIiwiYWE2YjI3MTItNjA2Mi00NTE5LThmODUtMTAyZDFlYWM4NjE3Ly9TdHVkeUFkbWluIiwiZmZlYTg5NWMtNzI3NC00MmZiLWFhNmMtOWY3ZDhkODgyNjQyLy9TdHVkeUFkbWluIiwiYmU2Yzg5NzgtZmZjYy00ODU4LThkMjMtYzU0Y2E3Y2Q3MGNiLy9TdHVkeUFkbWluIiwiOWUwYmEzMzMtY2U1Yi00NTI1LTg2OWEtOGZjYzQzMjgxZTk3Ly9TdHVkeUFkbWluIiwiODMxOTJkMDctYTk0Yi00MmE1LWE5OWEtZDdhMjg2ZDFiYjFjLy9TdHVkeUFkbWluIiwiNTA2NzJmZDQtMWQ5Yy00MTFiLTk5OTQtOGUyZGFkYWM1M2Q2Ly9TdHVkeUFkbWluIiwiNWZmNmM4ZWQtYmJlNS00ZDhhLWExNWEtMmYzZTE3MzMzOTZmLy9TdHVkeUFkbWluIiwiYjgxY2ZkM2EtZmE0NS00Y2VlLWE5YTMtMjUwMTcwMmI2MmZkLy9TdHVkeUFkbWluIiwiZjBhOGVhMTUtMWU4YS00MDY1LTk3MzgtY2YzYTdiMTM5MjA4Ly9TdHVkeUFkbWluIiwiNmY3MmM5ZmYtZDgxOC00NTFiLWI3NGEtM2NmNTBkMDA3ZDVkLy9TdHVkeUFkbWluIiwiOGNkY2Q5NWEtNDU1ZS00ZjE0LTgwYzUtOTViZDM1OGIwMDg5Ly9TdHVkeUFkbWluIiwiZGU4MTgyZGEtM2MyZC00MzU4LTkzMDYtMmUxOWIxN2I5NDZkLy9TdHVkeUFkbWluIiwiYTdlYjc2NTQtY2JjMy00MTM3LTg0NjItMjczOWUxNDY1OWFlLy9TdHVkeUFkbWluIiwiYzIwZDIzYzgtNmQ2My00MTc4LTkxMzMtODU2ZjE2NjNkZWU2Ly9TdHVkeUFkbWluIiwiM2I3ZGE3MWItNDJhMy00MDYzLTljNDQtOGFhYjFjMTUwMTk2Ly9TdHVkeUFkbWluIl0sInVzZXJVdWlkIjoiYzYzNDAwMzUtYzcyOC00ZmVkLWE1YTktMDhkOWViMzhkMDEwIiwidGVuYW50SWQiOiJsb2tpIiwic2Vzc2lvblJvbGVzIjpbIkRhdGFEZXNpZ25lciIsIlN0dWR5QWRtaW4iXSwiZGJIb3N0IjoiZGV2MS1wbGF0Zm9ybS1nbG9iYWwtcHJpbWFyeS1jbHVzdGVyLWluc3RhbmNlLmMwc3FwcmRqZmtqaS5ldS1jZW50cmFsLTEucmRzLmFtYXpvbmF3cy5jb20iLCJhd3NSb2xlIjoiIn0.bm5xIokRoILiYIjjx-NO3bkqzRs8_3j9l3pC4gfmPe0SDvFpkOjxJPc5oRZky-OGNz1dQQRGFgpYDIMz_ruT6kDPtpOrgQ6JHwUe5ksd1zP8JUyh8VWn2fxQEuUl8aQb214CIoYqQUfV53LaUsB9CuNNg6WTqxIUvMozy9m7hn2STsEHFXPThCdtgJ3PkNdVN_bEugAw25K8C55pheft5TM6bocbXNe185Vyr19FHLUlxrdoEj_bawJNodqog2yqNrqnjLvnuD-nD2-2TZHSPTZ7p-DtVbabKkCa1VTqBtY0yiSt9DD8nwb-oge2czh2LJLg9YxmnIQQScaGuFH0lQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|nelson|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Update a Visit Plan - SSE types",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var visitTypeECONSENT = \"eConsent\";",
+							"var visitTypeUNSCHEDULED = \"unscheduled\";",
+							"var visitTypeSSE = [\"screening\",\"eligibility\",\"studyPeriod\"];",
+							"var visitCount = 5;",
+							"const RandomNumbers = '123456789';",
+							"var status = [\"draft\", \"active\"];",
+							"const characters =\"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\";",
+							"var forceFormType = \"epro\";",
+							"var formExpirationType = [\"NEVER\", \"USE_TIME_OF_DAY\", \"1_HOUR\", \"2_HOURS\", \"3_HOURS\", \"4_HOURS\", \"5_HOURS\", \"6_HOURS\", \"7_HOURS\", \"8_HOURS\", \"9_HOURS\", \"10_HOURS\", \"11_HOURS\", \"12_HOURS\", \"13_HOURS\", \"14_HOURS\", \"15_HOURS\", \"16_HOURS\", \"17_HOURS\", \"18_HOURS\", \"19_HOURS\", \"20_HOURS\", \"21_HOURS\", \"22_HOURS\", \"23_HOURS\", \"1_DAY\", \"2_DAYS\", \"3_DAYS\", \"4_DAYS\", \"5_DAYS\", \"6_DAYS\", \"7_DAYS\"];",
+							"",
+							"pm.environment.set(\"int\", _.random(0, 100000));",
+							"",
+							"function generateString(result) {",
+							"    var result = \"\";",
+							"    for ( var i = 1; i <= characters.length; i++ ) {",
+							"       result += characters.charAt(Math.floor(Math.random() * characters));",
+							"     }",
+							"     return result;",
+							"}",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"function getRandomNumbers(){",
+							"    return RandomNumbers[getRandomInt(RandomNumbers.length)];",
+							"}",
+							"function randomVisitTypeSSE() {",
+							"  return visitTypeSSE[getRandomInt(visitTypeSSE.length)];",
+							"}",
+							"",
+							"function randomStatus() {",
+							"  return status[getRandomInt(status.length)];",
+							"}",
+							"",
+							"function randomFormExpirationType(){",
+							"    return formExpirationType[getRandomInt(formExpirationType.length)];",
+							"}",
+							"// visit plan",
+							"",
+							"pm.environment.set(\"vpExpectedVisitTypeUNSCHEDULED\", visitTypeUNSCHEDULED);",
+							"pm.environment.set(\"vpExpectedVisitTypeECONSENT\", visitTypeECONSENT);",
+							"",
+							"pm.environment.set(\"vpTitle-Updated\", \"VISIT PLAN TITLE - \" + pm.environment.get(\"int\") + \" - Updated\");",
+							"pm.environment.set(\"vpDescription-Updated\", \"VISIT PLAN Description - \" + pm.environment.get(\"int\") + \" - Updated\");",
+							"pm.environment.set(\"vpStatus\", randomStatus());",
+							"pm.environment.set(\"vpVersion\", getRandomInt(5));",
+							"pm.environment.set(\"vpProtocolVersion-Updated\", \"Protocol Version - \" + pm.environment.get(\"int\") + \" - Updated\");",
+							"pm.environment.set(\"vpExpectedTitle-Updated\", \"VP EXPECTED TITLE - \" + pm.environment.get(\"int\") + \" - Updated\");",
+							"",
+							"// day0",
+							"pm.environment.set(\"day0VisitId\",\"9c1414b7-4025-4d5b-9ec8-b809ddbd7794\");",
+							"pm.environment.set(\"day0VisitOId\",\"day0_visit_OId\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitTitle\",\"day0 visit_title \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFormId\",\"797a2557-ac1f-484a-8ece-9a0d0f342d5c\");",
+							"pm.environment.set(\"day0VisitFormName\",\"day0_visit_Name \"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitFormVersion\",\"day0 visit_version \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFieldDateId\",\"__S37-form-fields-aaq7gn7rith\");",
+							"pm.environment.set(\"day0VisitFieldDateName\",\"Field Name\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpGateKeeperT\",\"true\");",
+							"pm.environment.set(\"vpGateKeeperF\",\"false\");",
+							"pm.environment.set(\"econsentVisitStatusAction\",\"add\");",
+							"",
+							"// visits",
+							"for (var i=1; i<=visitCount; i++){",
+							"    pm.environment.set(\"vpExpectedVisitTitle0\"+i+\"-Updated\", \"VP VISIT TITLE 0\"+i+\" - \" + pm.environment.get(\"int\")+\" - Updated\");",
+							"    pm.environment.set(\"vpExpectedVisitTypeSSE0\"+i, randomVisitTypeSSE());",
+							"    pm.environment.set(\"vpExpectedVisitOID0\"+i+\"-Updated\", \"VP_Visit_OID0\"+i+pm.environment.get(\"int\")+\" - Updated\");",
+							"    pm.environment.set(\"vpExpectedVisitDisplayOrder0\"+i, getRandomInt(10));",
+							"\tpm.environment.set(\"vpExpectedVisitUUID0\"+i, \"{{$guid}}\");",
+							"",
+							"    // ------ //",
+							"",
+							"    pm.environment.set(\"vpVisitApplyOffSetUrl0\"+i, \"day\");",
+							"    pm.environment.set(\"vpVisitApplyOffSetValue0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyFromPrevVisit0\"+i, null);",
+							"    pm.environment.set(\"vpVisitApplyWindowLower0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyWindowUpper0\"+i, 0); ",
+							"}",
+							"",
+							"    pm.environment.set(\"vpExpectedVisitEconsentFormGroupID\", \"{{$guid}}\");",
+							"    pm.environment.set(\"vpExpectedFFRole\", \"Patient\");",
+							"    pm.environment.set(\"vpExpectedFFType\", forceFormType);",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeECRF\", \"ecrf\");",
+							"",
+							"",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType01\", \"DAY0\");",
+							"pm.environment.set(\"vpExpectedAVBasedWindowLower\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowUpper\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowOffSet\", getRandomInt(5));",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType02\", \"VISIT_WINDOW\");\t",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitOID-Updated\", \"VP EXPECTED PREVIOUS VISIT OID - \" + pm.environment.get(\"int\")+\"- Updated\");",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitTitle-Updated\", \"VP EXPECTED PREVIOUS VISIT Title - \" + pm.environment.get(\"int\")+\"- Updated\");",
+							"pm.environment.set(\"vpExpectedAVCalType03\", \"NONE\");",
+							"",
+							"pm.environment.set(\"vpExpectedAllowMultipleSubmit\", \"true\");",
+							"",
+							"",
+							"// onGoing & adhoc forms",
+							"    pm.environment.set(\"vpOngoingGroupFormTypeECRF\", \"ecrf\");",
+							"    pm.environment.set(\"vpAdhocFormTypeEPRO\", \"epro\");",
+							"    ",
+							"// Recur forms",
+							"for (var j=1; j<=3; j++){",
+							"    pm.environment.set(\"vpRecurFormDisplayOrder0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurFormTitle0\"+j+\"-Updated\", \"VP Recur Form TITLE\"+\" - \" + pm.environment.get(\"int\")+\" - Updated\");",
+							"    pm.environment.set(\"vpRecurFormVersion0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpRecurSiteID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurSiteName0\"+j+\"-Updated\", \"Recur Site Name \" + pm.environment.get(\"int\")+\" - Updated\");",
+							"}",
+							"",
+							"// ePro - Frequency",
+							"",
+							"var maxOccurence = [\"1\",\"2\",\"3\",\"4\"];",
+							"var FreqDayOfWeek = [\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\",\"SUN\"];",
+							"",
+							"\tfunction randommaxOccurence() {",
+							"\t  return maxOccurence[getRandomInt(maxOccurence.length)];",
+							"\t}",
+							"\tfunction randomFreqDayOfWeek() {",
+							"\t  return[getRandomInt(FreqDayOfWeek.length)];",
+							"\t}",
+							"",
+							"pm.environment.set(\"vpTriggerVisit\", \"VISIT\");",
+							"pm.environment.set(\"vpStartVisitOID\", \"Visit Start OID -\" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpEndVisitOID\", \"Visit End OID -\" + pm.environment.get(\"int\"));   ",
+							"pm.environment.set(\"vpFreqDaily\", \"DAILY\");",
+							"   ",
+							"pm.environment.set(\"vpFreqWeekly_On_Day\", \"WEEKLY_ON_DAY\");    ",
+							"pm.environment.set(\"vpFreqDayOfWeek_day01\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqDayOfWeek_day02\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqAfter_First_Visit\", \"WEEKLY_AFTER_FIRST_VISIT\");",
+							"pm.environment.set(\"vpFreqWeekly_After_start_Date\", \"WEEKLY_AFTER_START_DATE\"); ",
+							"",
+							"pm.environment.set(\"vpFreqStart_by_Condition\", \"WEEKLY_AFTER_CONDITION_START\"); ",
+							"pm.environment.set(\"vpTriggerCondition\", \"CONDITION\");",
+							"pm.environment.set(\"vpTriggerConditionDelay\", \"1\");   ",
+							"pm.environment.set(\"vpTriggerConditionDelayUnit\", \"d\");",
+							"",
+							"pm.environment.set(\"vpTriggerPreviousVisit\", \"PREVIOUS_VISIT\");",
+							"pm.environment.set(\"vpTriggerMaxOccurance\", randommaxOccurence());",
+							"pm.environment.set(\"vpTriggerMaxOccuranceUnit\", \"d\");    ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDate\", pm.environment.get(\"vpExpectedVisitTitle01\") +\"/\"+ pm.environment.get(\"vpExpectedVisitFormListFormTitle01\") + \"/title\");",
+							"pm.environment.set(\"vpTriggerDayAfterPreviousVisit\", \"1\");",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFormId\", pm.environment.get(\"vpExpectedVisitFormListFormID01\"));   ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateVisitOId\", pm.environment.get(\"vpExpectedVisitOID01\"));",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFieldId\", \"__S37-form-fields-\"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeAllDay\", \"ALL_DAY\");",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeTimePeriod\", \"TIME_PERIOD\");",
+							"",
+							"function fetchCurrentDate(){",
+							"        var today = new Date();",
+							"        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };",
+							"        options.timeZone = 'UTC';",
+							"        options.timeZoneName = 'short';",
+							"        var now = today.toLocaleString('en-US', options);",
+							"        return now;",
+							"}",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayStartTime\", fetchCurrentDate());",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayEndTime\", fetchCurrentDate());",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListExpirationType\", randomFormExpirationType());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response URL\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"api/v1/platform/visit-plan/trials/\"+pm.environment.get(\"trialId\")+\"/visit-plan/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.environment.set(\"visitPlanId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJEVVdIbzBnMTFFNHVta3hwcGhtaFFVa190OG1la0FSQWxXN285djRqSUNnIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlJKUHI5R1hhcVNCWnJUM3lHMEZvTF9Yc3pmRjBaZElUQjR0dUdxNEREeWciLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2Njk0Nzg1MTYsImV4cCI6MTY2OTU2NDkxNiwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxOGpibWdyazdXOE9tTzBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY2OTQ3ODUxNSwic3ViIjoiTVNEYXRhRGVzaWduZXJEZXYiLCJhd3NSZWdpb24iOiJldS1jZW50cmFsLTEiLCJzZXNzaW9uUGVybWlzc2lvbnMiOlsiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwiZWRpdFN0YW5kYXJkVmFyaWFibGVzIiwiZWRpdFN0dWR5Tm90aWZpY2F0aW9ucyIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImxpc3RTY2hlZHVsZVRlbXBsYXRlcyIsImxpc3RTaXRlcyIsImxpc3RUcmlhbHMiLCJtYW5hZ2VTY2hlZHVsZVRlbXBsYXRlcyIsIm1hbmFnZVNpdGVzIiwibWFuYWdlVmlzaXRQbGFuIiwidmlld0Zvcm1MaWJyYXJ5Iiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJ2aWV3U3RhbmRhcmRWYXJpYWJsZXMiLCJ2aWV3U3R1ZHkiLCJ2aWV3VGVuYW50Iiwidmlld1RyaWFsRmVhdHVyZXMiLCJ2aWV3VmlzaXRQbGFuTGlicmFyeSJdLCJ0ZW5hbnRVdWlkcyI6WyJmMmFhYzU1Ni0zM2Y0LTA2ZDUtM2NhYi03ZTJiMTJlMGE2NTYiXSwibXVsZVJlZ2lvbiI6ImRlLWMxIiwidGVuYW50Um9sZXMiOlsiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9EYXRhRGVzaWduZXIiXSwidXNlclV1aWQiOiJjMTY5ZDBhZi03ZGY1LTQyODItYTYzMi1kNjhiY2E4NDQ4MTMiLCJ0ZW5hbnRJZCI6Imxva2kiLCJzZXNzaW9uUm9sZXMiOlsiRGF0YURlc2lnbmVyIl0sImRiSG9zdCI6ImRldjEtcGxhdGZvcm0tZ2xvYmFsLXByaW1hcnktY2x1c3Rlci1pbnN0YW5jZS5jMHNxcHJkamZramkuZXUtY2VudHJhbC0xLnJkcy5hbWF6b25hd3MuY29tIiwiYXdzUm9sZSI6ImFybjphd3M6aWFtOjoxMjU5MDA1MDU5ODQ6cm9sZS9kZXYxLWV1LWRlLWxva2ktdGVuYW50LXJvbGUifQ.F1-j0abYbgCB-MPr_NS4IwA7DmiOYG28wyQC-9vi47jfxc4OjaEEXdzpEqc9HXUC0ygKD1-L6kdDC-DoZuWaQnkmcr7X1TzYfrriWzQvrxqHCPFrKmNCZgdaFRYOtzHJYYfyauuHH3N0tbX11-KwWqc0yHj0vv7x7J7G-Yx7EYKs7PikH0ElQyp0IHHOLQt9vtdLyIIkUoY67rk1OzETggZqNusnsG9B82Z64QsidaDg5S-tuBs8kJtkG3mfbMqhjvGkBD-CZfrPNyjHQDmKnBz_6uEmhyEifaxe08h69897jK3ERr9WZg6wz9crrzl3jbcKzBqzNxmW2U3t7ZFjEg",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|mustafa|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"{{visitPlanId}}\",\n    \"title\": \"{{vpTitle-Updated}}\",\n    \"status\": \"{{vpStatus}}\",\n    \"description\": \"{{vpDescription-Updated}}\",\n    \"version\": \"{{vpVersion}}\",\n    \"protocolVersion\": \"{{vpProtocolVersion-Updated}}\",\n    \"expectedVisitPlan\": {\n        \"title\": \"{{vpExpectedVisitPlanTitle-Updated}}\",\n        \"econsentVisitStatusAction\": \"{{econsentVisitStatusAction}}\",\n        \"visits\": [\n            {\n                \"title\": \"{{vpExpectedVisitTitle01}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeSSE01}}\",\n                \"OID\": \"{{vpExpectedVisitOID01}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder01}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID01}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n            },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID01}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle01}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion01}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder01}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI01}}\",\n                            \"conditions\": []\n\n                        },\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID02}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle02}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion02}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeEPRO}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder02}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI02}}\",\n                            \"conditions\": [],\n                            \"timeOfDay\": {\n                                        \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n                                    },\n                                    \"expiration\": {\n                                        \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n                                },\n                             \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}}\n                        }\n                    ]\n                }\n            }            \n        ]\n    },\n  \"ongoingForms\": {\n      \"id\": \"{{vpOngoingGroupID01}}\",\n    \"groups\": [\n      {\n        \"title\": \"{{vpOngoingGroupTitle01}}\",\n        \"OID\": \"{{vpOngoingGroupOID01}}\",\n        \"displayOrder\": {{vpOngoingGroupDisplayOrder01}},\n        \"forms\": [\n          {\n            \"displayOrder\": {{vpOngoingGroupFormDisplayOrder01}},\n            \"id\": \"{{vpOngoingGroupFormID01}}\",\n            \"title\": \"{{vpOngoingGroupFormTitle01}}\",\n            \"version\": \"{{vpOngoingGroupFormVersion01}}\",\n            \"formType\": \"{{vpOngoingGroupFormTypeECRF}}\"\n          }\n        ]\n      }\n    ]\n  },\n  \"adhocForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpAdhocFormDisplayOrder01}},\n        \"id\": \"{{vpAdhocFormID01}}\",\n        \"title\": \"{{vpAdhocFormTitle01}}\",\n        \"version\": \"{{vpAdhocFormVersion01}}\",\n        \"formType\": \"{{vpAdhocFormTypeEPRO}}\",\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpAdhocSiteID01}}\",\n              \"name\": \"{{vpAdhocSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpAdhocSiteID02}}\",\n              \"name\": \"{{vpAdhocSiteName02}}\"\n            }\n          ]\n        }\n      }\n    ]\n  },\n  \"recurringForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpRecurFormDisplayOrder01}},\n        \"id\": \"{{vpRecurFormID01}}\",\n        \"title\": \"{{vpRecurFormTitle01}}\",\n        \"version\": \"{{vpRecurFormVersion01}}\",\n        \"formType\": \"{{vpRecurFormTypeEPRO}}\",\n        \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}},\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpRecurSiteID01}}\",\n              \"name\": \"{{vpRecurSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpRecurSiteID02}}\",\n              \"name\": \"{{vpRecurSiteName02}}\"\n            }\n          ]\n        },\n        \"frequency\": {\n          \"frequencyType\": \"{{vpFreqDaily}}\",\n          \"trigger\": \"{{vpTriggerPreviousVisit}}\",\n          \"maxOccurence\": {{vpTriggerMaxOccurance}},\n          \"maxOccurenceUnit\": \"{{vpTriggerMaxOccuranceUnit}}\",\n          \"previousVisitDate\": \"{{vpTriggerPreviousVisitDate}}\",\n          \"previousVisitDateVisitOId\": \"{{vpTriggerPreviousVisitDateVisitOId}}\",\n          \"previousVisitDateFormId\": \"{{vpTriggerPreviousVisitDateFormId}}\",\n          \"previousVisitDateFieldId\": \"{{vpTriggerPreviousVisitDateFieldId}}\",\n          \"daysAfterPreviousVisit\": {{vpTriggerDayAfterPreviousVisit}}\n        },\n        \"timeOfDay\": {\n          \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n        },\n        \"expiration\": {\n          \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n        }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET -  Retrieve an updated Visit Plan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJTNGxkWlE0aHk1WDVaOVVfdng5TEdNT0RLTU10cW9JY1MwVU1xTVZmeDZVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULm8xcV9nSnV0SS0xeEZzOFFhRHpiUnRQYWlEbE92Q0NYNnVBWjJXTnM1RFUiLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NTA2NDIzNjQsImV4cCI6MTY1MDcyODc2NCwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxNmhod2ZlZTk2VEw3cTBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY1MDY0MjM2Mywic3ViIjoiTG9raURhdGFEZXNpZ25lclNhcWliIiwiYXdzUmVnaW9uIjoiZXUtY2VudHJhbC0xIiwic2Vzc2lvblBlcm1pc3Npb25zIjpbIm1hbmFnZVNjaGVkdWxlVGVtcGxhdGVzIiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJsaXN0U2NoZWR1bGVUZW1wbGF0ZXMiLCJ2aWV3VHJpYWwiLCJsaXN0VHJpYWxzIiwibWFuYWdlU2l0ZXMiLCJtYW5hZ2VGb3JtcyIsImxpc3RGb3JtcyIsInZpZXdGb3JtIiwidmlld1RyaWFsRmVhdHVyZXMiLCJtYW5hZ2VWaXNpdFBsYW4iLCJ2aWV3U2l0ZXMiLCJ2aWV3U3R1ZGllcyIsInZpZXdUZW5hbnRzIiwidmlld0Zvcm1MaWJyYXJ5IiwiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwidmlld1Zpc2l0UGxhbkxpYnJhcnkiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJhZGRGb3JtQnVpbGRlciIsImFkZFNpdGUiLCJlZGl0U2l0ZXMiLCJhZGRVc2VyIiwiZWRpdEFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybUJ1aWxkZXIiLCJlZGl0U3R1ZHkiLCJlZGl0VXNlciIsInZpZXdBY2Nlc3NSZXBvcnRzIiwidmlld0Zvcm1FeHBvcnRzIiwidmlld1JlcG9ydHMiLCJ2aWV3VXNlcnMiXSwidGVuYW50VXVpZHMiOlsiZjJhYWM1NTYtMzNmNC0wNmQ1LTNjYWItN2UyYjEyZTBhNjU2Il0sIm11bGVSZWdpb24iOiJkZS1jMSIsInRlbmFudFJvbGVzIjpbIjcwOGM0MzA3LTBkZDYtNDdjNS04YjliLTM3MWNiNTkzZWExNi8vRGF0YURlc2lnbmVyIiwiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9TdHVkeUFkbWluIiwiOTRmZTgwODItZWI4OC00MGRkLTg1ZjEtMDBkNzk2ZDRkYzRkLy9TdHVkeUFkbWluIiwiMDAwOWY3Y2QtZWI2YS00YTg5LWI1NWYtNWEyMTlkNmNlMTAzLy9TdHVkeUFkbWluIiwiOGFlMDhiZmItZGIzZi00MzM3LTk1ZjUtNDI0MzI2OGFhMTE2Ly9TdHVkeUFkbWluIiwiMjA4NzRlZGQtMTA3ZS00MGVmLTg4NjUtMzM1OTQ3NjAyMWZmLy9TdHVkeUFkbWluIiwiMmVhMjViMWEtZThkNi00NjU3LTkzY2YtZDJkZDUzODJjOThhLy9TdHVkeUFkbWluIiwiNThhZTNiYjAtOWZhZS00ZTc0LWJkMWItM2QzNmZlZDYwMWU4Ly9TdHVkeUFkbWluIiwiNDgzMTc1ZjctOTMzNi00MDM3LWJmYmMtM2ZjODY0MTMxYWE3Ly9TdHVkeUFkbWluIiwiMmQ2NjNjYmQtY2VjZS00N2M4LWIzYmMtNDNkYTI3NjRlMWY5Ly9TdHVkeUFkbWluIiwiY2M4Y2Y5ODAtNzE2Yy00MWJlLTk2NjctODM5MTAxZTA2ZjViLy9TdHVkeUFkbWluIiwiYTM5YmE1YjItMTMzZi00MzY4LTk3MTMtZDNhZWVmMzEyZDkwLy9TdHVkeUFkbWluIiwiNzhmY2Y0YWMtYTE2MC00MzkzLWE2NTctOGU3M2U1MThmYTJkLy9TdHVkeUFkbWluIiwiNGVmNWFkZTEtYTBmZS00OWRiLTkxYTMtZTM1NjA2ZDVkYWI5Ly9TdHVkeUFkbWluIiwiNjkxZTQ0ZTctNDUwMC00ZDBiLTk4MGUtODRiODljODVjZTQ4Ly9TdHVkeUFkbWluIiwiYWE2YjI3MTItNjA2Mi00NTE5LThmODUtMTAyZDFlYWM4NjE3Ly9TdHVkeUFkbWluIiwiZmZlYTg5NWMtNzI3NC00MmZiLWFhNmMtOWY3ZDhkODgyNjQyLy9TdHVkeUFkbWluIiwiYmU2Yzg5NzgtZmZjYy00ODU4LThkMjMtYzU0Y2E3Y2Q3MGNiLy9TdHVkeUFkbWluIiwiOWUwYmEzMzMtY2U1Yi00NTI1LTg2OWEtOGZjYzQzMjgxZTk3Ly9TdHVkeUFkbWluIiwiODMxOTJkMDctYTk0Yi00MmE1LWE5OWEtZDdhMjg2ZDFiYjFjLy9TdHVkeUFkbWluIiwiNTA2NzJmZDQtMWQ5Yy00MTFiLTk5OTQtOGUyZGFkYWM1M2Q2Ly9TdHVkeUFkbWluIiwiNWZmNmM4ZWQtYmJlNS00ZDhhLWExNWEtMmYzZTE3MzMzOTZmLy9TdHVkeUFkbWluIiwiYjgxY2ZkM2EtZmE0NS00Y2VlLWE5YTMtMjUwMTcwMmI2MmZkLy9TdHVkeUFkbWluIiwiZjBhOGVhMTUtMWU4YS00MDY1LTk3MzgtY2YzYTdiMTM5MjA4Ly9TdHVkeUFkbWluIiwiNmY3MmM5ZmYtZDgxOC00NTFiLWI3NGEtM2NmNTBkMDA3ZDVkLy9TdHVkeUFkbWluIiwiOGNkY2Q5NWEtNDU1ZS00ZjE0LTgwYzUtOTViZDM1OGIwMDg5Ly9TdHVkeUFkbWluIiwiZGU4MTgyZGEtM2MyZC00MzU4LTkzMDYtMmUxOWIxN2I5NDZkLy9TdHVkeUFkbWluIiwiYTdlYjc2NTQtY2JjMy00MTM3LTg0NjItMjczOWUxNDY1OWFlLy9TdHVkeUFkbWluIiwiYzIwZDIzYzgtNmQ2My00MTc4LTkxMzMtODU2ZjE2NjNkZWU2Ly9TdHVkeUFkbWluIiwiM2I3ZGE3MWItNDJhMy00MDYzLTljNDQtOGFhYjFjMTUwMTk2Ly9TdHVkeUFkbWluIl0sInVzZXJVdWlkIjoiYzYzNDAwMzUtYzcyOC00ZmVkLWE1YTktMDhkOWViMzhkMDEwIiwidGVuYW50SWQiOiJsb2tpIiwic2Vzc2lvblJvbGVzIjpbIkRhdGFEZXNpZ25lciIsIlN0dWR5QWRtaW4iXSwiZGJIb3N0IjoiZGV2MS1wbGF0Zm9ybS1nbG9iYWwtcHJpbWFyeS1jbHVzdGVyLWluc3RhbmNlLmMwc3FwcmRqZmtqaS5ldS1jZW50cmFsLTEucmRzLmFtYXpvbmF3cy5jb20iLCJhd3NSb2xlIjoiIn0.bm5xIokRoILiYIjjx-NO3bkqzRs8_3j9l3pC4gfmPe0SDvFpkOjxJPc5oRZky-OGNz1dQQRGFgpYDIMz_ruT6kDPtpOrgQ6JHwUe5ksd1zP8JUyh8VWn2fxQEuUl8aQb214CIoYqQUfV53LaUsB9CuNNg6WTqxIUvMozy9m7hn2STsEHFXPThCdtgJ3PkNdVN_bEugAw25K8C55pheft5TM6bocbXNe185Vyr19FHLUlxrdoEj_bawJNodqog2yqNrqnjLvnuD-nD2-2TZHSPTZ7p-DtVbabKkCa1VTqBtY0yiSt9DD8nwb-oge2czh2LJLg9YxmnIQQScaGuFH0lQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|nelson|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - Create a Visit Plan - Unscheduled/eConsent types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response URL\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"api/v1/platform/visit-plan/trials/\"+pm.environment.get(\"trialId\")+\"/visit-plan/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response Message\", function () {",
+							"    pm.expect(jsonData.message).to.eql(\"Visit Plan created successfully.\");",
+							"});",
+							"",
+							"pm.environment.set(\"visitPlanId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var visitTypeECONSENT = \"eConsent\";",
+							"var visitTypeUNSCHEDULED = \"unscheduled\";",
+							"var visitTypeSSE = [\"screening\",\"eligibility\",\"studyPeriod\"];",
+							"var visitCount = 5;",
+							"const RandomNumbers = '123456789';",
+							"var status = [\"draft\"];",
+							"const characters =\"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\";",
+							"var forceFormType = \"epro\";",
+							"var formExpirationType = [\"NEVER\", \"USE_TIME_OF_DAY\", \"1_HOUR\", \"2_HOURS\", \"3_HOURS\", \"4_HOURS\", \"5_HOURS\", \"6_HOURS\", \"7_HOURS\", \"8_HOURS\", \"9_HOURS\", \"10_HOURS\", \"11_HOURS\", \"12_HOURS\", \"13_HOURS\", \"14_HOURS\", \"15_HOURS\", \"16_HOURS\", \"17_HOURS\", \"18_HOURS\", \"19_HOURS\", \"20_HOURS\", \"21_HOURS\", \"22_HOURS\", \"23_HOURS\", \"1_DAY\", \"2_DAYS\", \"3_DAYS\", \"4_DAYS\", \"5_DAYS\", \"6_DAYS\", \"7_DAYS\"];",
+							"",
+							"pm.environment.set(\"int\", _.random(0, 100000));",
+							"",
+							"function generateString(result) {",
+							"    var result = \"\";",
+							"    for ( var i = 1; i <= characters.length; i++ ) {",
+							"       result += characters.charAt(Math.floor(Math.random() * characters));",
+							"     }",
+							"     return result;",
+							"}",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"function getRandomNumbers(){",
+							"    return RandomNumbers[getRandomInt(RandomNumbers.length)];",
+							"}",
+							"function randomVisitTypeSSE() {",
+							"  return visitTypeSSE[getRandomInt(visitTypeSSE.length)];",
+							"}",
+							"",
+							"function randomStatus() {",
+							"  return status[getRandomInt(status.length)];",
+							"}",
+							"",
+							"function randomFormExpirationType(){",
+							"    return formExpirationType[getRandomInt(formExpirationType.length)];",
+							"}",
+							"// visit plan",
+							"",
+							"pm.environment.set(\"vpExpectedVisitTypeUNSCHEDULED\", visitTypeUNSCHEDULED);",
+							"pm.environment.set(\"vpExpectedVisitTypeECONSENT\", visitTypeECONSENT);",
+							"",
+							"pm.environment.set(\"vpTitle\", \"VISIT PLAN TITLE - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpDescription\", \"VISIT PLAN Description - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpStatus\", randomStatus());",
+							"pm.environment.set(\"vpVersion\", getRandomInt(5));",
+							"pm.environment.set(\"vpProtocolVersion\", \"Protocol Version - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedTitle\", \"VP EXPECTED TITLE - \" + pm.environment.get(\"int\"));",
+							"",
+							"// day0",
+							"pm.environment.set(\"day0VisitId\",\"9c1414b7-4025-4d5b-9ec8-b809ddbd7794\");",
+							"pm.environment.set(\"day0VisitOId\",\"day0_visit_OId\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitTitle\",\"day0 visit_title \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFormId\",\"797a2557-ac1f-484a-8ece-9a0d0f342d5c\");",
+							"pm.environment.set(\"day0VisitFormName\",\"day0_visit_Name \"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitFormVersion\",\"day0 visit_version \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFieldDateId\",\"__S37-form-fields-aaq7gn7rith\");",
+							"pm.environment.set(\"day0VisitFieldDateName\",\"Field Name\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpGateKeeperT\",\"true\");",
+							"pm.environment.set(\"vpGateKeeperF\",\"false\");",
+							"pm.environment.set(\"econsentVisitStatusAction\",\"add\");",
+							"",
+							"// visits",
+							"for (var i=1; i<=visitCount; i++){",
+							"    pm.environment.set(\"vpExpectedVisitTitle0\"+i, \"VP VISIT TITLE 0\"+i+\" - \" + pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpExpectedVisitTypeSSE0\"+i, randomVisitTypeSSE());",
+							"    pm.environment.set(\"vpExpectedVisitOID0\"+i, \"VP_Visit_OID0\"+i+pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpExpectedVisitDisplayOrder0\"+i, getRandomInt(10));",
+							"\tpm.environment.set(\"vpExpectedVisitUUID0\"+i, \"{{$guid}}\");",
+							"",
+							"    // ------ //",
+							"",
+							"    pm.environment.set(\"vpVisitApplyOffSetUrl0\"+i, \"day\");",
+							"    pm.environment.set(\"vpVisitApplyOffSetValue0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyFromPrevVisit0\"+i, null);",
+							"    pm.environment.set(\"vpVisitApplyWindowLower0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyWindowUpper0\"+i, 0); ",
+							"}",
+							"",
+							"    pm.environment.set(\"vpExpectedVisitEconsentFormGroupID\", \"{{$guid}}\");",
+							"    pm.environment.set(\"vpExpectedFFRole\", \"Patient\");",
+							"    pm.environment.set(\"vpExpectedFFType\", forceFormType);",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeECRF\", \"ecrf\");",
+							"",
+							"",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType01\", \"DAY0\");",
+							"pm.environment.set(\"vpExpectedAVBasedWindowLower\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowUpper\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowOffSet\", getRandomInt(5));",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType02\", \"VISIT_WINDOW\");\t",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitOID\", \"VP EXPECTED PREVIOUS VISIT OID - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitTitle\", \"VP EXPECTED PREVIOUS VISIT Title - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedAVCalType03\", \"NONE\");",
+							"",
+							"pm.environment.set(\"vpExpectedAllowMultipleSubmit\", \"true\");",
+							"",
+							"",
+							"// onGoing & adhoc forms",
+							"    pm.environment.set(\"vpOngoingGroupFormTypeECRF\", \"ecrf\");",
+							"    pm.environment.set(\"vpAdhocFormTypeEPRO\", \"epro\");",
+							"    ",
+							"// Recur forms",
+							"for (var j=1; j<=3; j++){",
+							"    pm.environment.set(\"vpRecurFormDisplayOrder0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurFormTitle0\"+j, \"VP Recur Form TITLE\"+\" - \" + pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpRecurFormVersion0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpRecurSiteID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurSiteName0\"+j, \"Recur Site Name \" + pm.environment.get(\"int\"));",
+							"}",
+							"",
+							"// ePro - Frequency",
+							"",
+							"var maxOccurence = [\"1\",\"2\",\"3\",\"4\"];",
+							"var FreqDayOfWeek = [\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\",\"SUN\"];",
+							"",
+							"\tfunction randommaxOccurence() {",
+							"\t  return maxOccurence[getRandomInt(maxOccurence.length)];",
+							"\t}",
+							"\tfunction randomFreqDayOfWeek() {",
+							"\t  return[getRandomInt(FreqDayOfWeek.length)];",
+							"\t}",
+							"",
+							"pm.environment.set(\"vpTriggerVisit\", \"VISIT\");",
+							"pm.environment.set(\"vpStartVisitOID\", \"Visit Start OID -\" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpEndVisitOID\", \"Visit End OID -\" + pm.environment.get(\"int\"));   ",
+							"pm.environment.set(\"vpFreqDaily\", \"DAILY\");",
+							"   ",
+							"pm.environment.set(\"vpFreqWeekly_On_Day\", \"WEEKLY_ON_DAY\");    ",
+							"pm.environment.set(\"vpFreqDayOfWeek_day01\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqDayOfWeek_day02\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqAfter_First_Visit\", \"WEEKLY_AFTER_FIRST_VISIT\");",
+							"pm.environment.set(\"vpFreqWeekly_After_start_Date\", \"WEEKLY_AFTER_START_DATE\"); ",
+							"",
+							"pm.environment.set(\"vpFreqStart_by_Condition\", \"WEEKLY_AFTER_CONDITION_START\"); ",
+							"pm.environment.set(\"vpTriggerCondition\", \"CONDITION\");",
+							"pm.environment.set(\"vpTriggerConditionDelay\", \"1\");   ",
+							"pm.environment.set(\"vpTriggerConditionDelayUnit\", \"d\");",
+							"",
+							"pm.environment.set(\"vpTriggerPreviousVisit\", \"PREVIOUS_VISIT\");",
+							"pm.environment.set(\"vpTriggerMaxOccurance\", randommaxOccurence());",
+							"pm.environment.set(\"vpTriggerMaxOccuranceUnit\", \"d\");    ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDate\", pm.environment.get(\"vpExpectedVisitTitle01\") +\"/\"+ pm.environment.get(\"vpExpectedVisitFormListFormTitle01\") + \"/title\");",
+							"pm.environment.set(\"vpTriggerDayAfterPreviousVisit\", \"1\");",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFormId\", pm.environment.get(\"vpExpectedVisitFormListFormID01\"));   ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateVisitOId\", pm.environment.get(\"vpExpectedVisitOID01\"));",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFieldId\", \"__S37-form-fields-\"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeAllDay\", \"ALL_DAY\");",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeTimePeriod\", \"TIME_PERIOD\");",
+							"",
+							"function fetchCurrentDate(){",
+							"        var today = new Date();",
+							"        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };",
+							"        options.timeZone = 'UTC';",
+							"        options.timeZoneName = 'short';",
+							"        var now = today.toLocaleString('en-US', options);",
+							"        return now;",
+							"}",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayStartTime\", fetchCurrentDate());",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayEndTime\", fetchCurrentDate());",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListExpirationType\", randomFormExpirationType());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJTNGxkWlE0aHk1WDVaOVVfdng5TEdNT0RLTU10cW9JY1MwVU1xTVZmeDZVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULm8xcV9nSnV0SS0xeEZzOFFhRHpiUnRQYWlEbE92Q0NYNnVBWjJXTnM1RFUiLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NTA2NDIzNjQsImV4cCI6MTY1MDcyODc2NCwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxNmhod2ZlZTk2VEw3cTBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY1MDY0MjM2Mywic3ViIjoiTG9raURhdGFEZXNpZ25lclNhcWliIiwiYXdzUmVnaW9uIjoiZXUtY2VudHJhbC0xIiwic2Vzc2lvblBlcm1pc3Npb25zIjpbIm1hbmFnZVNjaGVkdWxlVGVtcGxhdGVzIiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJsaXN0U2NoZWR1bGVUZW1wbGF0ZXMiLCJ2aWV3VHJpYWwiLCJsaXN0VHJpYWxzIiwibWFuYWdlU2l0ZXMiLCJtYW5hZ2VGb3JtcyIsImxpc3RGb3JtcyIsInZpZXdGb3JtIiwidmlld1RyaWFsRmVhdHVyZXMiLCJtYW5hZ2VWaXNpdFBsYW4iLCJ2aWV3U2l0ZXMiLCJ2aWV3U3R1ZGllcyIsInZpZXdUZW5hbnRzIiwidmlld0Zvcm1MaWJyYXJ5IiwiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwidmlld1Zpc2l0UGxhbkxpYnJhcnkiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJhZGRGb3JtQnVpbGRlciIsImFkZFNpdGUiLCJlZGl0U2l0ZXMiLCJhZGRVc2VyIiwiZWRpdEFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybUJ1aWxkZXIiLCJlZGl0U3R1ZHkiLCJlZGl0VXNlciIsInZpZXdBY2Nlc3NSZXBvcnRzIiwidmlld0Zvcm1FeHBvcnRzIiwidmlld1JlcG9ydHMiLCJ2aWV3VXNlcnMiXSwidGVuYW50VXVpZHMiOlsiZjJhYWM1NTYtMzNmNC0wNmQ1LTNjYWItN2UyYjEyZTBhNjU2Il0sIm11bGVSZWdpb24iOiJkZS1jMSIsInRlbmFudFJvbGVzIjpbIjcwOGM0MzA3LTBkZDYtNDdjNS04YjliLTM3MWNiNTkzZWExNi8vRGF0YURlc2lnbmVyIiwiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9TdHVkeUFkbWluIiwiOTRmZTgwODItZWI4OC00MGRkLTg1ZjEtMDBkNzk2ZDRkYzRkLy9TdHVkeUFkbWluIiwiMDAwOWY3Y2QtZWI2YS00YTg5LWI1NWYtNWEyMTlkNmNlMTAzLy9TdHVkeUFkbWluIiwiOGFlMDhiZmItZGIzZi00MzM3LTk1ZjUtNDI0MzI2OGFhMTE2Ly9TdHVkeUFkbWluIiwiMjA4NzRlZGQtMTA3ZS00MGVmLTg4NjUtMzM1OTQ3NjAyMWZmLy9TdHVkeUFkbWluIiwiMmVhMjViMWEtZThkNi00NjU3LTkzY2YtZDJkZDUzODJjOThhLy9TdHVkeUFkbWluIiwiNThhZTNiYjAtOWZhZS00ZTc0LWJkMWItM2QzNmZlZDYwMWU4Ly9TdHVkeUFkbWluIiwiNDgzMTc1ZjctOTMzNi00MDM3LWJmYmMtM2ZjODY0MTMxYWE3Ly9TdHVkeUFkbWluIiwiMmQ2NjNjYmQtY2VjZS00N2M4LWIzYmMtNDNkYTI3NjRlMWY5Ly9TdHVkeUFkbWluIiwiY2M4Y2Y5ODAtNzE2Yy00MWJlLTk2NjctODM5MTAxZTA2ZjViLy9TdHVkeUFkbWluIiwiYTM5YmE1YjItMTMzZi00MzY4LTk3MTMtZDNhZWVmMzEyZDkwLy9TdHVkeUFkbWluIiwiNzhmY2Y0YWMtYTE2MC00MzkzLWE2NTctOGU3M2U1MThmYTJkLy9TdHVkeUFkbWluIiwiNGVmNWFkZTEtYTBmZS00OWRiLTkxYTMtZTM1NjA2ZDVkYWI5Ly9TdHVkeUFkbWluIiwiNjkxZTQ0ZTctNDUwMC00ZDBiLTk4MGUtODRiODljODVjZTQ4Ly9TdHVkeUFkbWluIiwiYWE2YjI3MTItNjA2Mi00NTE5LThmODUtMTAyZDFlYWM4NjE3Ly9TdHVkeUFkbWluIiwiZmZlYTg5NWMtNzI3NC00MmZiLWFhNmMtOWY3ZDhkODgyNjQyLy9TdHVkeUFkbWluIiwiYmU2Yzg5NzgtZmZjYy00ODU4LThkMjMtYzU0Y2E3Y2Q3MGNiLy9TdHVkeUFkbWluIiwiOWUwYmEzMzMtY2U1Yi00NTI1LTg2OWEtOGZjYzQzMjgxZTk3Ly9TdHVkeUFkbWluIiwiODMxOTJkMDctYTk0Yi00MmE1LWE5OWEtZDdhMjg2ZDFiYjFjLy9TdHVkeUFkbWluIiwiNTA2NzJmZDQtMWQ5Yy00MTFiLTk5OTQtOGUyZGFkYWM1M2Q2Ly9TdHVkeUFkbWluIiwiNWZmNmM4ZWQtYmJlNS00ZDhhLWExNWEtMmYzZTE3MzMzOTZmLy9TdHVkeUFkbWluIiwiYjgxY2ZkM2EtZmE0NS00Y2VlLWE5YTMtMjUwMTcwMmI2MmZkLy9TdHVkeUFkbWluIiwiZjBhOGVhMTUtMWU4YS00MDY1LTk3MzgtY2YzYTdiMTM5MjA4Ly9TdHVkeUFkbWluIiwiNmY3MmM5ZmYtZDgxOC00NTFiLWI3NGEtM2NmNTBkMDA3ZDVkLy9TdHVkeUFkbWluIiwiOGNkY2Q5NWEtNDU1ZS00ZjE0LTgwYzUtOTViZDM1OGIwMDg5Ly9TdHVkeUFkbWluIiwiZGU4MTgyZGEtM2MyZC00MzU4LTkzMDYtMmUxOWIxN2I5NDZkLy9TdHVkeUFkbWluIiwiYTdlYjc2NTQtY2JjMy00MTM3LTg0NjItMjczOWUxNDY1OWFlLy9TdHVkeUFkbWluIiwiYzIwZDIzYzgtNmQ2My00MTc4LTkxMzMtODU2ZjE2NjNkZWU2Ly9TdHVkeUFkbWluIiwiM2I3ZGE3MWItNDJhMy00MDYzLTljNDQtOGFhYjFjMTUwMTk2Ly9TdHVkeUFkbWluIl0sInVzZXJVdWlkIjoiYzYzNDAwMzUtYzcyOC00ZmVkLWE1YTktMDhkOWViMzhkMDEwIiwidGVuYW50SWQiOiJsb2tpIiwic2Vzc2lvblJvbGVzIjpbIkRhdGFEZXNpZ25lciIsIlN0dWR5QWRtaW4iXSwiZGJIb3N0IjoiZGV2MS1wbGF0Zm9ybS1nbG9iYWwtcHJpbWFyeS1jbHVzdGVyLWluc3RhbmNlLmMwc3FwcmRqZmtqaS5ldS1jZW50cmFsLTEucmRzLmFtYXpvbmF3cy5jb20iLCJhd3NSb2xlIjoiIn0.bm5xIokRoILiYIjjx-NO3bkqzRs8_3j9l3pC4gfmPe0SDvFpkOjxJPc5oRZky-OGNz1dQQRGFgpYDIMz_ruT6kDPtpOrgQ6JHwUe5ksd1zP8JUyh8VWn2fxQEuUl8aQb214CIoYqQUfV53LaUsB9CuNNg6WTqxIUvMozy9m7hn2STsEHFXPThCdtgJ3PkNdVN_bEugAw25K8C55pheft5TM6bocbXNe185Vyr19FHLUlxrdoEj_bawJNodqog2yqNrqnjLvnuD-nD2-2TZHSPTZ7p-DtVbabKkCa1VTqBtY0yiSt9DD8nwb-oge2czh2LJLg9YxmnIQQScaGuFH0lQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|nelson|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"{{vpTitle}}\",\n    \"status\": \"{{vpStatus}}\",\n    \"description\": \"{{vpDescription}}\",\n    \"version\": \"{{vpVersion}}\",\n    \"protocolVersion\": \"{{vpProtocolVersion}}\",\n    \"expectedVisitPlan\": {\n        \"title\": \"{{vpExpectedVisitPlanTitle}}\",\n        \"econsentVisitStatusAction\": \"{{econsentVisitStatusAction}}\",\n        \"visits\": [\n            {\n                \"title\": \"{{vpExpectedVisitTitle01}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeUNSCHEDULED}}\",\n                \"OID\": \"{{vpExpectedVisitOID01}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder01}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID01}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n            },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID01}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle01}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion01}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder01}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI01}}\",\n                            \"conditions\": []\n                        },\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID02}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle02}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion02}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeEPRO}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder02}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI02}}\",\n                            \"conditions\": [],\n                            \"timeOfDay\": {\n                                        \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n                                    },\n                                    \"expiration\": {\n                                        \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n                                },\n                             \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}}\n                        }\n                    ]\n                }\n            },\n            {\n                \"title\": \"{{vpExpectedVisitTitle02}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeECONSENT}}\",\n                \"OID\": \"{{vpExpectedVisitOID02}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder02}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID02}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                 \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n                },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID03}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle03}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion03}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder03}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI03}}\",\n                            \"conditions\": []\n                        }\n                    ]\n                }\n            }\n        ]\n    },\n  \"ongoingForms\": {\n    \"groups\": [\n      {\n        \"title\": \"{{vpOngoingGroupTitle01}}\",\n        \"OID\": \"{{vpOngoingGroupOID01}}\",\n        \"displayOrder\": {{vpOngoingGroupDisplayOrder01}},\n        \"forms\": [\n          {\n            \"displayOrder\": {{vpOngoingGroupFormDisplayOrder01}},\n            \"id\": \"{{vpOngoingGroupFormID01}}\",\n            \"title\": \"{{vpOngoingGroupFormTitle01}}\",\n            \"version\": \"{{vpOngoingGroupFormVersion01}}\",\n            \"formType\": \"{{vpOngoingGroupFormTypeECRF}}\"\n          }\n        ]\n      }\n    ]\n  },\n  \"adhocForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpAdhocFormDisplayOrder01}},\n        \"id\": \"{{vpAdhocFormID01}}\",\n        \"title\": \"{{vpAdhocFormTitle01}}\",\n        \"version\": \"{{vpAdhocFormVersion01}}\",\n        \"formType\": \"{{vpAdhocFormTypeEPRO}}\",\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpAdhocSiteID01}}\",\n              \"name\": \"{{vpAdhocSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpAdhocSiteID02}}\",\n              \"name\": \"{{vpAdhocSiteName02}}\"\n            }\n          ]\n        }\n      }\n    ]\n  },\n  \"recurringForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpRecurFormDisplayOrder01}},\n        \"id\": \"{{vpRecurFormID01}}\",\n        \"title\": \"{{vpRecurFormTitle01}}\",\n        \"version\": \"{{vpRecurFormVersion01}}\",\n        \"formType\": \"{{vpRecurFormTypeEPRO}}\",\n        \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}},\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpRecurSiteID01}}\",\n              \"name\": \"{{vpRecurSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpRecurSiteID02}}\",\n              \"name\": \"{{vpRecurSiteName02}}\"\n            }\n          ]\n        },\n        \"frequency\": {\n          \"frequencyType\": \"{{vpFreqDaily}}\",\n          \"trigger\": \"{{vpTriggerPreviousVisit}}\",\n          \"maxOccurence\": {{vpTriggerMaxOccurance}},\n          \"maxOccurenceUnit\": \"{{vpTriggerMaxOccuranceUnit}}\",\n          \"previousVisitDate\": \"{{vpTriggerPreviousVisitDate}}\",\n          \"previousVisitDateVisitOId\": \"{{vpTriggerPreviousVisitDateVisitOId}}\",\n          \"previousVisitDateFormId\": \"{{vpTriggerPreviousVisitDateFormId}}\",\n          \"previousVisitDateFieldId\": \"{{vpTriggerPreviousVisitDateFieldId}}\",\n          \"daysAfterPreviousVisit\": {{vpTriggerDayAfterPreviousVisit}}\n        },\n        \"timeOfDay\": {\n          \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n        },\n        \"expiration\": {\n          \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n        }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET -  Retrieve a Visit Plan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJTNGxkWlE0aHk1WDVaOVVfdng5TEdNT0RLTU10cW9JY1MwVU1xTVZmeDZVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULm8xcV9nSnV0SS0xeEZzOFFhRHpiUnRQYWlEbE92Q0NYNnVBWjJXTnM1RFUiLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NTA2NDIzNjQsImV4cCI6MTY1MDcyODc2NCwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxNmhod2ZlZTk2VEw3cTBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY1MDY0MjM2Mywic3ViIjoiTG9raURhdGFEZXNpZ25lclNhcWliIiwiYXdzUmVnaW9uIjoiZXUtY2VudHJhbC0xIiwic2Vzc2lvblBlcm1pc3Npb25zIjpbIm1hbmFnZVNjaGVkdWxlVGVtcGxhdGVzIiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJsaXN0U2NoZWR1bGVUZW1wbGF0ZXMiLCJ2aWV3VHJpYWwiLCJsaXN0VHJpYWxzIiwibWFuYWdlU2l0ZXMiLCJtYW5hZ2VGb3JtcyIsImxpc3RGb3JtcyIsInZpZXdGb3JtIiwidmlld1RyaWFsRmVhdHVyZXMiLCJtYW5hZ2VWaXNpdFBsYW4iLCJ2aWV3U2l0ZXMiLCJ2aWV3U3R1ZGllcyIsInZpZXdUZW5hbnRzIiwidmlld0Zvcm1MaWJyYXJ5IiwiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwidmlld1Zpc2l0UGxhbkxpYnJhcnkiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJhZGRGb3JtQnVpbGRlciIsImFkZFNpdGUiLCJlZGl0U2l0ZXMiLCJhZGRVc2VyIiwiZWRpdEFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybUJ1aWxkZXIiLCJlZGl0U3R1ZHkiLCJlZGl0VXNlciIsInZpZXdBY2Nlc3NSZXBvcnRzIiwidmlld0Zvcm1FeHBvcnRzIiwidmlld1JlcG9ydHMiLCJ2aWV3VXNlcnMiXSwidGVuYW50VXVpZHMiOlsiZjJhYWM1NTYtMzNmNC0wNmQ1LTNjYWItN2UyYjEyZTBhNjU2Il0sIm11bGVSZWdpb24iOiJkZS1jMSIsInRlbmFudFJvbGVzIjpbIjcwOGM0MzA3LTBkZDYtNDdjNS04YjliLTM3MWNiNTkzZWExNi8vRGF0YURlc2lnbmVyIiwiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9TdHVkeUFkbWluIiwiOTRmZTgwODItZWI4OC00MGRkLTg1ZjEtMDBkNzk2ZDRkYzRkLy9TdHVkeUFkbWluIiwiMDAwOWY3Y2QtZWI2YS00YTg5LWI1NWYtNWEyMTlkNmNlMTAzLy9TdHVkeUFkbWluIiwiOGFlMDhiZmItZGIzZi00MzM3LTk1ZjUtNDI0MzI2OGFhMTE2Ly9TdHVkeUFkbWluIiwiMjA4NzRlZGQtMTA3ZS00MGVmLTg4NjUtMzM1OTQ3NjAyMWZmLy9TdHVkeUFkbWluIiwiMmVhMjViMWEtZThkNi00NjU3LTkzY2YtZDJkZDUzODJjOThhLy9TdHVkeUFkbWluIiwiNThhZTNiYjAtOWZhZS00ZTc0LWJkMWItM2QzNmZlZDYwMWU4Ly9TdHVkeUFkbWluIiwiNDgzMTc1ZjctOTMzNi00MDM3LWJmYmMtM2ZjODY0MTMxYWE3Ly9TdHVkeUFkbWluIiwiMmQ2NjNjYmQtY2VjZS00N2M4LWIzYmMtNDNkYTI3NjRlMWY5Ly9TdHVkeUFkbWluIiwiY2M4Y2Y5ODAtNzE2Yy00MWJlLTk2NjctODM5MTAxZTA2ZjViLy9TdHVkeUFkbWluIiwiYTM5YmE1YjItMTMzZi00MzY4LTk3MTMtZDNhZWVmMzEyZDkwLy9TdHVkeUFkbWluIiwiNzhmY2Y0YWMtYTE2MC00MzkzLWE2NTctOGU3M2U1MThmYTJkLy9TdHVkeUFkbWluIiwiNGVmNWFkZTEtYTBmZS00OWRiLTkxYTMtZTM1NjA2ZDVkYWI5Ly9TdHVkeUFkbWluIiwiNjkxZTQ0ZTctNDUwMC00ZDBiLTk4MGUtODRiODljODVjZTQ4Ly9TdHVkeUFkbWluIiwiYWE2YjI3MTItNjA2Mi00NTE5LThmODUtMTAyZDFlYWM4NjE3Ly9TdHVkeUFkbWluIiwiZmZlYTg5NWMtNzI3NC00MmZiLWFhNmMtOWY3ZDhkODgyNjQyLy9TdHVkeUFkbWluIiwiYmU2Yzg5NzgtZmZjYy00ODU4LThkMjMtYzU0Y2E3Y2Q3MGNiLy9TdHVkeUFkbWluIiwiOWUwYmEzMzMtY2U1Yi00NTI1LTg2OWEtOGZjYzQzMjgxZTk3Ly9TdHVkeUFkbWluIiwiODMxOTJkMDctYTk0Yi00MmE1LWE5OWEtZDdhMjg2ZDFiYjFjLy9TdHVkeUFkbWluIiwiNTA2NzJmZDQtMWQ5Yy00MTFiLTk5OTQtOGUyZGFkYWM1M2Q2Ly9TdHVkeUFkbWluIiwiNWZmNmM4ZWQtYmJlNS00ZDhhLWExNWEtMmYzZTE3MzMzOTZmLy9TdHVkeUFkbWluIiwiYjgxY2ZkM2EtZmE0NS00Y2VlLWE5YTMtMjUwMTcwMmI2MmZkLy9TdHVkeUFkbWluIiwiZjBhOGVhMTUtMWU4YS00MDY1LTk3MzgtY2YzYTdiMTM5MjA4Ly9TdHVkeUFkbWluIiwiNmY3MmM5ZmYtZDgxOC00NTFiLWI3NGEtM2NmNTBkMDA3ZDVkLy9TdHVkeUFkbWluIiwiOGNkY2Q5NWEtNDU1ZS00ZjE0LTgwYzUtOTViZDM1OGIwMDg5Ly9TdHVkeUFkbWluIiwiZGU4MTgyZGEtM2MyZC00MzU4LTkzMDYtMmUxOWIxN2I5NDZkLy9TdHVkeUFkbWluIiwiYTdlYjc2NTQtY2JjMy00MTM3LTg0NjItMjczOWUxNDY1OWFlLy9TdHVkeUFkbWluIiwiYzIwZDIzYzgtNmQ2My00MTc4LTkxMzMtODU2ZjE2NjNkZWU2Ly9TdHVkeUFkbWluIiwiM2I3ZGE3MWItNDJhMy00MDYzLTljNDQtOGFhYjFjMTUwMTk2Ly9TdHVkeUFkbWluIl0sInVzZXJVdWlkIjoiYzYzNDAwMzUtYzcyOC00ZmVkLWE1YTktMDhkOWViMzhkMDEwIiwidGVuYW50SWQiOiJsb2tpIiwic2Vzc2lvblJvbGVzIjpbIkRhdGFEZXNpZ25lciIsIlN0dWR5QWRtaW4iXSwiZGJIb3N0IjoiZGV2MS1wbGF0Zm9ybS1nbG9iYWwtcHJpbWFyeS1jbHVzdGVyLWluc3RhbmNlLmMwc3FwcmRqZmtqaS5ldS1jZW50cmFsLTEucmRzLmFtYXpvbmF3cy5jb20iLCJhd3NSb2xlIjoiIn0.bm5xIokRoILiYIjjx-NO3bkqzRs8_3j9l3pC4gfmPe0SDvFpkOjxJPc5oRZky-OGNz1dQQRGFgpYDIMz_ruT6kDPtpOrgQ6JHwUe5ksd1zP8JUyh8VWn2fxQEuUl8aQb214CIoYqQUfV53LaUsB9CuNNg6WTqxIUvMozy9m7hn2STsEHFXPThCdtgJ3PkNdVN_bEugAw25K8C55pheft5TM6bocbXNe185Vyr19FHLUlxrdoEj_bawJNodqog2yqNrqnjLvnuD-nD2-2TZHSPTZ7p-DtVbabKkCa1VTqBtY0yiSt9DD8nwb-oge2czh2LJLg9YxmnIQQScaGuFH0lQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|nelson|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Update a Visit Plan - Unscheduled/eConsent types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response URL\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"api/v1/platform/visit-plan/trials/\"+pm.environment.get(\"trialId\")+\"/visit-plan/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.environment.set(\"visitPlanId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var visitTypeECONSENT = \"eConsent\";",
+							"var visitTypeUNSCHEDULED = \"unscheduled\";",
+							"var visitTypeSSE = [\"screening\",\"eligibility\",\"studyPeriod\"];",
+							"var visitCount = 5;",
+							"const RandomNumbers = '123456789';",
+							"var status = [\"draft\", \"active\", \"retired\"];",
+							"const characters =\"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\";",
+							"var forceFormType = \"epro\";",
+							"var formExpirationType = [\"NEVER\", \"USE_TIME_OF_DAY\", \"1_HOUR\", \"2_HOURS\", \"3_HOURS\", \"4_HOURS\", \"5_HOURS\", \"6_HOURS\", \"7_HOURS\", \"8_HOURS\", \"9_HOURS\", \"10_HOURS\", \"11_HOURS\", \"12_HOURS\", \"13_HOURS\", \"14_HOURS\", \"15_HOURS\", \"16_HOURS\", \"17_HOURS\", \"18_HOURS\", \"19_HOURS\", \"20_HOURS\", \"21_HOURS\", \"22_HOURS\", \"23_HOURS\", \"1_DAY\", \"2_DAYS\", \"3_DAYS\", \"4_DAYS\", \"5_DAYS\", \"6_DAYS\", \"7_DAYS\"];",
+							"",
+							"pm.environment.set(\"int\", _.random(0, 100000));",
+							"",
+							"function generateString(result) {",
+							"    var result = \"\";",
+							"    for ( var i = 1; i <= characters.length; i++ ) {",
+							"       result += characters.charAt(Math.floor(Math.random() * characters));",
+							"     }",
+							"     return result;",
+							"}",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"function getRandomNumbers(){",
+							"    return RandomNumbers[getRandomInt(RandomNumbers.length)];",
+							"}",
+							"function randomVisitTypeSSE() {",
+							"  return visitTypeSSE[getRandomInt(visitTypeSSE.length)];",
+							"}",
+							"",
+							"function randomStatus() {",
+							"  return status[getRandomInt(status.length)];",
+							"}",
+							"",
+							"function randomFormExpirationType(){",
+							"    return formExpirationType[getRandomInt(formExpirationType.length)];",
+							"}",
+							"// visit plan",
+							"",
+							"pm.environment.set(\"vpExpectedVisitTypeUNSCHEDULED\", visitTypeUNSCHEDULED);",
+							"pm.environment.set(\"vpExpectedVisitTypeECONSENT\", visitTypeECONSENT);",
+							"",
+							"pm.environment.set(\"vpTitle\", \"VISIT PLAN TITLE - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpDescription\", \"VISIT PLAN Description - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpStatus\", randomStatus());",
+							"pm.environment.set(\"vpVersion\", getRandomInt(5));",
+							"pm.environment.set(\"vpProtocolVersion\", \"Protocol Version - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedTitle\", \"VP EXPECTED TITLE - \" + pm.environment.get(\"int\"));",
+							"",
+							"// day0",
+							"pm.environment.set(\"day0VisitId\",\"9c1414b7-4025-4d5b-9ec8-b809ddbd7794\");",
+							"pm.environment.set(\"day0VisitOId\",\"day0_visit_OId\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitTitle\",\"day0 visit_title \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFormId\",\"797a2557-ac1f-484a-8ece-9a0d0f342d5c\");",
+							"pm.environment.set(\"day0VisitFormName\",\"day0_visit_Name \"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"day0VisitFormVersion\",\"day0 visit_version \"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"day0VisitFieldDateId\",\"__S37-form-fields-aaq7gn7rith\");",
+							"pm.environment.set(\"day0VisitFieldDateName\",\"Field Name\"+pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpGateKeeperT\",\"true\");",
+							"pm.environment.set(\"vpGateKeeperF\",\"false\");",
+							"pm.environment.set(\"econsentVisitStatusAction\",\"add\");",
+							"",
+							"// visits",
+							"for (var i=1; i<=visitCount; i++){",
+							"    pm.environment.set(\"vpExpectedVisitTitle0\"+i, \"VP VISIT TITLE 0\"+i+\" - \" + pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpExpectedVisitTypeSSE0\"+i, randomVisitTypeSSE());",
+							"    pm.environment.set(\"vpExpectedVisitOID0\"+i, \"VP_Visit_OID0\"+i+pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpExpectedVisitDisplayOrder0\"+i, getRandomInt(10));",
+							"\tpm.environment.set(\"vpExpectedVisitUUID0\"+i, \"{{$guid}}\");",
+							"",
+							"    // ------ //",
+							"",
+							"    pm.environment.set(\"vpVisitApplyOffSetUrl0\"+i, \"day\");",
+							"    pm.environment.set(\"vpVisitApplyOffSetValue0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyFromPrevVisit0\"+i, null);",
+							"    pm.environment.set(\"vpVisitApplyWindowLower0\"+i, 0);",
+							"    pm.environment.set(\"vpVisitApplyWindowUpper0\"+i, 0); ",
+							"}",
+							"",
+							"    pm.environment.set(\"vpExpectedVisitEconsentFormGroupID\", \"{{$guid}}\");",
+							"    pm.environment.set(\"vpExpectedFFRole\", \"Patient\");",
+							"    pm.environment.set(\"vpExpectedFFType\", forceFormType);",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpExpectedVisitFormListFormTypeECRF\", \"ecrf\");",
+							"",
+							"",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType01\", \"DAY0\");",
+							"pm.environment.set(\"vpExpectedAVBasedWindowLower\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowUpper\", getRandomInt(10));",
+							"pm.environment.set(\"vpExpectedAVBasedWindowOffSet\", getRandomInt(5));",
+							"",
+							"pm.environment.set(\"vpExpectedAVCalType02\", \"VISIT_WINDOW\");\t",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitOID\", \"VP EXPECTED PREVIOUS VISIT OID - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedAVPreviousVisitTitle\", \"VP EXPECTED PREVIOUS VISIT Title - \" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpExpectedAVCalType03\", \"NONE\");",
+							"",
+							"pm.environment.set(\"vpExpectedAllowMultipleSubmit\", \"true\");",
+							"",
+							"",
+							"// onGoing & adhoc forms",
+							"    pm.environment.set(\"vpOngoingGroupFormTypeECRF\", \"ecrf\");",
+							"    pm.environment.set(\"vpAdhocFormTypeEPRO\", \"epro\");",
+							"    ",
+							"// Recur forms",
+							"for (var j=1; j<=3; j++){",
+							"    pm.environment.set(\"vpRecurFormDisplayOrder0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurFormTitle0\"+j, \"VP Recur Form TITLE\"+\" - \" + pm.environment.get(\"int\"));",
+							"    pm.environment.set(\"vpRecurFormVersion0\"+j, getRandomInt(10));",
+							"    pm.environment.set(\"vpRecurFormTypeEPRO\", \"epro\");",
+							"    pm.environment.set(\"vpRecurSiteID0\"+j, \"{{$guid}}\");",
+							"    pm.environment.set(\"vpRecurSiteName0\"+j, \"Recur Site Name \" + pm.environment.get(\"int\"));",
+							"}",
+							"",
+							"// ePro - Frequency",
+							"",
+							"var maxOccurence = [\"1\",\"2\",\"3\",\"4\"];",
+							"var FreqDayOfWeek = [\"MON\",\"TUE\",\"WED\",\"THU\",\"FRI\",\"SAT\",\"SUN\"];",
+							"",
+							"\tfunction randommaxOccurence() {",
+							"\t  return maxOccurence[getRandomInt(maxOccurence.length)];",
+							"\t}",
+							"\tfunction randomFreqDayOfWeek() {",
+							"\t  return[getRandomInt(FreqDayOfWeek.length)];",
+							"\t}",
+							"",
+							"pm.environment.set(\"vpTriggerVisit\", \"VISIT\");",
+							"pm.environment.set(\"vpStartVisitOID\", \"Visit Start OID -\" + pm.environment.get(\"int\"));",
+							"pm.environment.set(\"vpEndVisitOID\", \"Visit End OID -\" + pm.environment.get(\"int\"));   ",
+							"pm.environment.set(\"vpFreqDaily\", \"DAILY\");",
+							"   ",
+							"pm.environment.set(\"vpFreqWeekly_On_Day\", \"WEEKLY_ON_DAY\");    ",
+							"pm.environment.set(\"vpFreqDayOfWeek_day01\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqDayOfWeek_day02\", randomFreqDayOfWeek());",
+							"pm.environment.set(\"vpFreqAfter_First_Visit\", \"WEEKLY_AFTER_FIRST_VISIT\");",
+							"pm.environment.set(\"vpFreqWeekly_After_start_Date\", \"WEEKLY_AFTER_START_DATE\"); ",
+							"",
+							"pm.environment.set(\"vpFreqStart_by_Condition\", \"WEEKLY_AFTER_CONDITION_START\"); ",
+							"pm.environment.set(\"vpTriggerCondition\", \"CONDITION\");",
+							"pm.environment.set(\"vpTriggerConditionDelay\", \"1\");   ",
+							"pm.environment.set(\"vpTriggerConditionDelayUnit\", \"d\");",
+							"",
+							"pm.environment.set(\"vpTriggerPreviousVisit\", \"PREVIOUS_VISIT\");",
+							"pm.environment.set(\"vpTriggerMaxOccurance\", randommaxOccurence());",
+							"pm.environment.set(\"vpTriggerMaxOccuranceUnit\", \"d\");    ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDate\", pm.environment.get(\"vpExpectedVisitTitle01\") +\"/\"+ pm.environment.get(\"vpExpectedVisitFormListFormTitle01\") + \"/title\");",
+							"pm.environment.set(\"vpTriggerDayAfterPreviousVisit\", \"1\");",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFormId\", pm.environment.get(\"vpExpectedVisitFormListFormID01\"));   ",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateVisitOId\", pm.environment.get(\"vpExpectedVisitOID01\"));",
+							"pm.environment.set(\"vpTriggerPreviousVisitDateFieldId\", \"__S37-form-fields-\"+pm.environment.get(\"int\"));",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeAllDay\", \"ALL_DAY\");",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayTypeTimePeriod\", \"TIME_PERIOD\");",
+							"",
+							"function fetchCurrentDate(){",
+							"        var today = new Date();",
+							"        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };",
+							"        options.timeZone = 'UTC';",
+							"        options.timeZoneName = 'short';",
+							"        var now = today.toLocaleString('en-US', options);",
+							"        return now;",
+							"}",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayStartTime\", fetchCurrentDate());",
+							"pm.environment.set(\"vpExpectedVisitFormListTimeOfDayEndTime\", fetchCurrentDate());",
+							"",
+							"pm.environment.set(\"vpExpectedVisitFormListExpirationType\", randomFormExpirationType());",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJTNGxkWlE0aHk1WDVaOVVfdng5TEdNT0RLTU10cW9JY1MwVU1xTVZmeDZVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULm8xcV9nSnV0SS0xeEZzOFFhRHpiUnRQYWlEbE92Q0NYNnVBWjJXTnM1RFUiLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NTA2NDIzNjQsImV4cCI6MTY1MDcyODc2NCwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxNmhod2ZlZTk2VEw3cTBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY1MDY0MjM2Mywic3ViIjoiTG9raURhdGFEZXNpZ25lclNhcWliIiwiYXdzUmVnaW9uIjoiZXUtY2VudHJhbC0xIiwic2Vzc2lvblBlcm1pc3Npb25zIjpbIm1hbmFnZVNjaGVkdWxlVGVtcGxhdGVzIiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJsaXN0U2NoZWR1bGVUZW1wbGF0ZXMiLCJ2aWV3VHJpYWwiLCJsaXN0VHJpYWxzIiwibWFuYWdlU2l0ZXMiLCJtYW5hZ2VGb3JtcyIsImxpc3RGb3JtcyIsInZpZXdGb3JtIiwidmlld1RyaWFsRmVhdHVyZXMiLCJtYW5hZ2VWaXNpdFBsYW4iLCJ2aWV3U2l0ZXMiLCJ2aWV3U3R1ZGllcyIsInZpZXdUZW5hbnRzIiwidmlld0Zvcm1MaWJyYXJ5IiwiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwidmlld1Zpc2l0UGxhbkxpYnJhcnkiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJhZGRGb3JtQnVpbGRlciIsImFkZFNpdGUiLCJlZGl0U2l0ZXMiLCJhZGRVc2VyIiwiZWRpdEFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybUJ1aWxkZXIiLCJlZGl0U3R1ZHkiLCJlZGl0VXNlciIsInZpZXdBY2Nlc3NSZXBvcnRzIiwidmlld0Zvcm1FeHBvcnRzIiwidmlld1JlcG9ydHMiLCJ2aWV3VXNlcnMiXSwidGVuYW50VXVpZHMiOlsiZjJhYWM1NTYtMzNmNC0wNmQ1LTNjYWItN2UyYjEyZTBhNjU2Il0sIm11bGVSZWdpb24iOiJkZS1jMSIsInRlbmFudFJvbGVzIjpbIjcwOGM0MzA3LTBkZDYtNDdjNS04YjliLTM3MWNiNTkzZWExNi8vRGF0YURlc2lnbmVyIiwiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9TdHVkeUFkbWluIiwiOTRmZTgwODItZWI4OC00MGRkLTg1ZjEtMDBkNzk2ZDRkYzRkLy9TdHVkeUFkbWluIiwiMDAwOWY3Y2QtZWI2YS00YTg5LWI1NWYtNWEyMTlkNmNlMTAzLy9TdHVkeUFkbWluIiwiOGFlMDhiZmItZGIzZi00MzM3LTk1ZjUtNDI0MzI2OGFhMTE2Ly9TdHVkeUFkbWluIiwiMjA4NzRlZGQtMTA3ZS00MGVmLTg4NjUtMzM1OTQ3NjAyMWZmLy9TdHVkeUFkbWluIiwiMmVhMjViMWEtZThkNi00NjU3LTkzY2YtZDJkZDUzODJjOThhLy9TdHVkeUFkbWluIiwiNThhZTNiYjAtOWZhZS00ZTc0LWJkMWItM2QzNmZlZDYwMWU4Ly9TdHVkeUFkbWluIiwiNDgzMTc1ZjctOTMzNi00MDM3LWJmYmMtM2ZjODY0MTMxYWE3Ly9TdHVkeUFkbWluIiwiMmQ2NjNjYmQtY2VjZS00N2M4LWIzYmMtNDNkYTI3NjRlMWY5Ly9TdHVkeUFkbWluIiwiY2M4Y2Y5ODAtNzE2Yy00MWJlLTk2NjctODM5MTAxZTA2ZjViLy9TdHVkeUFkbWluIiwiYTM5YmE1YjItMTMzZi00MzY4LTk3MTMtZDNhZWVmMzEyZDkwLy9TdHVkeUFkbWluIiwiNzhmY2Y0YWMtYTE2MC00MzkzLWE2NTctOGU3M2U1MThmYTJkLy9TdHVkeUFkbWluIiwiNGVmNWFkZTEtYTBmZS00OWRiLTkxYTMtZTM1NjA2ZDVkYWI5Ly9TdHVkeUFkbWluIiwiNjkxZTQ0ZTctNDUwMC00ZDBiLTk4MGUtODRiODljODVjZTQ4Ly9TdHVkeUFkbWluIiwiYWE2YjI3MTItNjA2Mi00NTE5LThmODUtMTAyZDFlYWM4NjE3Ly9TdHVkeUFkbWluIiwiZmZlYTg5NWMtNzI3NC00MmZiLWFhNmMtOWY3ZDhkODgyNjQyLy9TdHVkeUFkbWluIiwiYmU2Yzg5NzgtZmZjYy00ODU4LThkMjMtYzU0Y2E3Y2Q3MGNiLy9TdHVkeUFkbWluIiwiOWUwYmEzMzMtY2U1Yi00NTI1LTg2OWEtOGZjYzQzMjgxZTk3Ly9TdHVkeUFkbWluIiwiODMxOTJkMDctYTk0Yi00MmE1LWE5OWEtZDdhMjg2ZDFiYjFjLy9TdHVkeUFkbWluIiwiNTA2NzJmZDQtMWQ5Yy00MTFiLTk5OTQtOGUyZGFkYWM1M2Q2Ly9TdHVkeUFkbWluIiwiNWZmNmM4ZWQtYmJlNS00ZDhhLWExNWEtMmYzZTE3MzMzOTZmLy9TdHVkeUFkbWluIiwiYjgxY2ZkM2EtZmE0NS00Y2VlLWE5YTMtMjUwMTcwMmI2MmZkLy9TdHVkeUFkbWluIiwiZjBhOGVhMTUtMWU4YS00MDY1LTk3MzgtY2YzYTdiMTM5MjA4Ly9TdHVkeUFkbWluIiwiNmY3MmM5ZmYtZDgxOC00NTFiLWI3NGEtM2NmNTBkMDA3ZDVkLy9TdHVkeUFkbWluIiwiOGNkY2Q5NWEtNDU1ZS00ZjE0LTgwYzUtOTViZDM1OGIwMDg5Ly9TdHVkeUFkbWluIiwiZGU4MTgyZGEtM2MyZC00MzU4LTkzMDYtMmUxOWIxN2I5NDZkLy9TdHVkeUFkbWluIiwiYTdlYjc2NTQtY2JjMy00MTM3LTg0NjItMjczOWUxNDY1OWFlLy9TdHVkeUFkbWluIiwiYzIwZDIzYzgtNmQ2My00MTc4LTkxMzMtODU2ZjE2NjNkZWU2Ly9TdHVkeUFkbWluIiwiM2I3ZGE3MWItNDJhMy00MDYzLTljNDQtOGFhYjFjMTUwMTk2Ly9TdHVkeUFkbWluIl0sInVzZXJVdWlkIjoiYzYzNDAwMzUtYzcyOC00ZmVkLWE1YTktMDhkOWViMzhkMDEwIiwidGVuYW50SWQiOiJsb2tpIiwic2Vzc2lvblJvbGVzIjpbIkRhdGFEZXNpZ25lciIsIlN0dWR5QWRtaW4iXSwiZGJIb3N0IjoiZGV2MS1wbGF0Zm9ybS1nbG9iYWwtcHJpbWFyeS1jbHVzdGVyLWluc3RhbmNlLmMwc3FwcmRqZmtqaS5ldS1jZW50cmFsLTEucmRzLmFtYXpvbmF3cy5jb20iLCJhd3NSb2xlIjoiIn0.bm5xIokRoILiYIjjx-NO3bkqzRs8_3j9l3pC4gfmPe0SDvFpkOjxJPc5oRZky-OGNz1dQQRGFgpYDIMz_ruT6kDPtpOrgQ6JHwUe5ksd1zP8JUyh8VWn2fxQEuUl8aQb214CIoYqQUfV53LaUsB9CuNNg6WTqxIUvMozy9m7hn2STsEHFXPThCdtgJ3PkNdVN_bEugAw25K8C55pheft5TM6bocbXNe185Vyr19FHLUlxrdoEj_bawJNodqog2yqNrqnjLvnuD-nD2-2TZHSPTZ7p-DtVbabKkCa1VTqBtY0yiSt9DD8nwb-oge2czh2LJLg9YxmnIQQScaGuFH0lQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|nelson|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"{{visitPlanId}}\",\n    \"title\": \"{{vpTitle}}\",\n    \"status\": \"{{vpStatus}}\",\n    \"description\": \"{{vpDescription}}\",\n    \"version\": \"{{vpVersion}}\",\n    \"protocolVersion\": \"{{vpProtocolVersion}}\",\n    \"expectedVisitPlan\": {\n        \"title\": \"{{vpExpectedVisitPlanTitle}}\",\n        \"econsentVisitStatusAction\": \"{{econsentVisitStatusAction}}\",\n        \"visits\": [\n            {\n                \"title\": \"{{vpExpectedVisitTitle01}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeUNSCHEDULED}}\",\n                \"OID\": \"{{vpExpectedVisitOID01}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder01}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID01}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n            },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID01}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle01}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion01}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder01}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI01}}\",\n                            \"conditions\": []\n                        },\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID02}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle02}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion02}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeEPRO}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder02}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI02}}\",\n                            \"conditions\": [],\n                            \"timeOfDay\": {\n                                        \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n                                    },\n                                    \"expiration\": {\n                                        \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n                                },\n                             \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}}\n                        }\n                    ]\n                }\n            },\n            {\n                \"title\": \"{{vpExpectedVisitTitle02}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeECONSENT}}\",\n                \"OID\": \"{{vpExpectedVisitOID02}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder02}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID02}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                 \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n                },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID03}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle03}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion03}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder03}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI03}}\",\n                            \"conditions\": []\n                        }\n                    ]\n                }\n            }\n        ]\n    },\n  \"ongoingForms\": {\n        \"id\": \"{{vpOngoingGroupID01}}\",\n    \"groups\": [\n      {\n        \"title\": \"{{vpOngoingGroupTitle01}}\",\n        \"OID\": \"{{vpOngoingGroupOID01}}\",\n        \"displayOrder\": {{vpOngoingGroupDisplayOrder01}},\n        \"forms\": [\n          {\n            \"displayOrder\": {{vpOngoingGroupFormDisplayOrder01}},\n            \"id\": \"{{vpOngoingGroupFormID01}}\",\n            \"title\": \"{{vpOngoingGroupFormTitle01}}\",\n            \"version\": \"{{vpOngoingGroupFormVersion01}}\",\n            \"formType\": \"{{vpOngoingGroupFormTypeECRF}}\"\n          }\n        ]\n      }\n    ]\n  },\n  \"adhocForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpAdhocFormDisplayOrder01}},\n        \"id\": \"{{vpAdhocFormID01}}\",\n        \"title\": \"{{vpAdhocFormTitle01}}\",\n        \"version\": \"{{vpAdhocFormVersion01}}\",\n        \"formType\": \"{{vpAdhocFormTypeEPRO}}\",\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpAdhocSiteID01}}\",\n              \"name\": \"{{vpAdhocSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpAdhocSiteID02}}\",\n              \"name\": \"{{vpAdhocSiteName02}}\"\n            }\n          ]\n        }\n      }\n    ]\n  },\n  \"recurringForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpRecurFormDisplayOrder01}},\n        \"id\": \"{{vpRecurFormID01}}\",\n        \"title\": \"{{vpRecurFormTitle01}}\",\n        \"version\": \"{{vpRecurFormVersion01}}\",\n        \"formType\": \"{{vpRecurFormTypeEPRO}}\",\n        \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}},\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpRecurSiteID01}}\",\n              \"name\": \"{{vpRecurSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpRecurSiteID02}}\",\n              \"name\": \"{{vpRecurSiteName02}}\"\n            }\n          ]\n        },\n        \"frequency\": {\n          \"frequencyType\": \"{{vpFreqDaily}}\",\n          \"trigger\": \"{{vpTriggerPreviousVisit}}\",\n          \"maxOccurence\": {{vpTriggerMaxOccurance}},\n          \"maxOccurenceUnit\": \"{{vpTriggerMaxOccuranceUnit}}\",\n          \"previousVisitDate\": \"{{vpTriggerPreviousVisitDate}}\",\n          \"previousVisitDateVisitOId\": \"{{vpTriggerPreviousVisitDateVisitOId}}\",\n          \"previousVisitDateFormId\": \"{{vpTriggerPreviousVisitDateFormId}}\",\n          \"previousVisitDateFieldId\": \"{{vpTriggerPreviousVisitDateFieldId}}\",\n          \"daysAfterPreviousVisit\": {{vpTriggerDayAfterPreviousVisit}}\n        },\n        \"timeOfDay\": {\n          \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n        },\n        \"expiration\": {\n          \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n        }\n      }\n    ]\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET -  Retrieve an updated Visit Plan",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJTNGxkWlE0aHk1WDVaOVVfdng5TEdNT0RLTU10cW9JY1MwVU1xTVZmeDZVIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULm8xcV9nSnV0SS0xeEZzOFFhRHpiUnRQYWlEbE92Q0NYNnVBWjJXTnM1RFUiLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2NTA2NDIzNjQsImV4cCI6MTY1MDcyODc2NCwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxNmhod2ZlZTk2VEw3cTBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY1MDY0MjM2Mywic3ViIjoiTG9raURhdGFEZXNpZ25lclNhcWliIiwiYXdzUmVnaW9uIjoiZXUtY2VudHJhbC0xIiwic2Vzc2lvblBlcm1pc3Npb25zIjpbIm1hbmFnZVNjaGVkdWxlVGVtcGxhdGVzIiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJsaXN0U2NoZWR1bGVUZW1wbGF0ZXMiLCJ2aWV3VHJpYWwiLCJsaXN0VHJpYWxzIiwibWFuYWdlU2l0ZXMiLCJtYW5hZ2VGb3JtcyIsImxpc3RGb3JtcyIsInZpZXdGb3JtIiwidmlld1RyaWFsRmVhdHVyZXMiLCJtYW5hZ2VWaXNpdFBsYW4iLCJ2aWV3U2l0ZXMiLCJ2aWV3U3R1ZGllcyIsInZpZXdUZW5hbnRzIiwidmlld0Zvcm1MaWJyYXJ5IiwiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwidmlld1Zpc2l0UGxhbkxpYnJhcnkiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJhZGRGb3JtQnVpbGRlciIsImFkZFNpdGUiLCJlZGl0U2l0ZXMiLCJhZGRVc2VyIiwiZWRpdEFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybUJ1aWxkZXIiLCJlZGl0U3R1ZHkiLCJlZGl0VXNlciIsInZpZXdBY2Nlc3NSZXBvcnRzIiwidmlld0Zvcm1FeHBvcnRzIiwidmlld1JlcG9ydHMiLCJ2aWV3VXNlcnMiXSwidGVuYW50VXVpZHMiOlsiZjJhYWM1NTYtMzNmNC0wNmQ1LTNjYWItN2UyYjEyZTBhNjU2Il0sIm11bGVSZWdpb24iOiJkZS1jMSIsInRlbmFudFJvbGVzIjpbIjcwOGM0MzA3LTBkZDYtNDdjNS04YjliLTM3MWNiNTkzZWExNi8vRGF0YURlc2lnbmVyIiwiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9TdHVkeUFkbWluIiwiOTRmZTgwODItZWI4OC00MGRkLTg1ZjEtMDBkNzk2ZDRkYzRkLy9TdHVkeUFkbWluIiwiMDAwOWY3Y2QtZWI2YS00YTg5LWI1NWYtNWEyMTlkNmNlMTAzLy9TdHVkeUFkbWluIiwiOGFlMDhiZmItZGIzZi00MzM3LTk1ZjUtNDI0MzI2OGFhMTE2Ly9TdHVkeUFkbWluIiwiMjA4NzRlZGQtMTA3ZS00MGVmLTg4NjUtMzM1OTQ3NjAyMWZmLy9TdHVkeUFkbWluIiwiMmVhMjViMWEtZThkNi00NjU3LTkzY2YtZDJkZDUzODJjOThhLy9TdHVkeUFkbWluIiwiNThhZTNiYjAtOWZhZS00ZTc0LWJkMWItM2QzNmZlZDYwMWU4Ly9TdHVkeUFkbWluIiwiNDgzMTc1ZjctOTMzNi00MDM3LWJmYmMtM2ZjODY0MTMxYWE3Ly9TdHVkeUFkbWluIiwiMmQ2NjNjYmQtY2VjZS00N2M4LWIzYmMtNDNkYTI3NjRlMWY5Ly9TdHVkeUFkbWluIiwiY2M4Y2Y5ODAtNzE2Yy00MWJlLTk2NjctODM5MTAxZTA2ZjViLy9TdHVkeUFkbWluIiwiYTM5YmE1YjItMTMzZi00MzY4LTk3MTMtZDNhZWVmMzEyZDkwLy9TdHVkeUFkbWluIiwiNzhmY2Y0YWMtYTE2MC00MzkzLWE2NTctOGU3M2U1MThmYTJkLy9TdHVkeUFkbWluIiwiNGVmNWFkZTEtYTBmZS00OWRiLTkxYTMtZTM1NjA2ZDVkYWI5Ly9TdHVkeUFkbWluIiwiNjkxZTQ0ZTctNDUwMC00ZDBiLTk4MGUtODRiODljODVjZTQ4Ly9TdHVkeUFkbWluIiwiYWE2YjI3MTItNjA2Mi00NTE5LThmODUtMTAyZDFlYWM4NjE3Ly9TdHVkeUFkbWluIiwiZmZlYTg5NWMtNzI3NC00MmZiLWFhNmMtOWY3ZDhkODgyNjQyLy9TdHVkeUFkbWluIiwiYmU2Yzg5NzgtZmZjYy00ODU4LThkMjMtYzU0Y2E3Y2Q3MGNiLy9TdHVkeUFkbWluIiwiOWUwYmEzMzMtY2U1Yi00NTI1LTg2OWEtOGZjYzQzMjgxZTk3Ly9TdHVkeUFkbWluIiwiODMxOTJkMDctYTk0Yi00MmE1LWE5OWEtZDdhMjg2ZDFiYjFjLy9TdHVkeUFkbWluIiwiNTA2NzJmZDQtMWQ5Yy00MTFiLTk5OTQtOGUyZGFkYWM1M2Q2Ly9TdHVkeUFkbWluIiwiNWZmNmM4ZWQtYmJlNS00ZDhhLWExNWEtMmYzZTE3MzMzOTZmLy9TdHVkeUFkbWluIiwiYjgxY2ZkM2EtZmE0NS00Y2VlLWE5YTMtMjUwMTcwMmI2MmZkLy9TdHVkeUFkbWluIiwiZjBhOGVhMTUtMWU4YS00MDY1LTk3MzgtY2YzYTdiMTM5MjA4Ly9TdHVkeUFkbWluIiwiNmY3MmM5ZmYtZDgxOC00NTFiLWI3NGEtM2NmNTBkMDA3ZDVkLy9TdHVkeUFkbWluIiwiOGNkY2Q5NWEtNDU1ZS00ZjE0LTgwYzUtOTViZDM1OGIwMDg5Ly9TdHVkeUFkbWluIiwiZGU4MTgyZGEtM2MyZC00MzU4LTkzMDYtMmUxOWIxN2I5NDZkLy9TdHVkeUFkbWluIiwiYTdlYjc2NTQtY2JjMy00MTM3LTg0NjItMjczOWUxNDY1OWFlLy9TdHVkeUFkbWluIiwiYzIwZDIzYzgtNmQ2My00MTc4LTkxMzMtODU2ZjE2NjNkZWU2Ly9TdHVkeUFkbWluIiwiM2I3ZGE3MWItNDJhMy00MDYzLTljNDQtOGFhYjFjMTUwMTk2Ly9TdHVkeUFkbWluIl0sInVzZXJVdWlkIjoiYzYzNDAwMzUtYzcyOC00ZmVkLWE1YTktMDhkOWViMzhkMDEwIiwidGVuYW50SWQiOiJsb2tpIiwic2Vzc2lvblJvbGVzIjpbIkRhdGFEZXNpZ25lciIsIlN0dWR5QWRtaW4iXSwiZGJIb3N0IjoiZGV2MS1wbGF0Zm9ybS1nbG9iYWwtcHJpbWFyeS1jbHVzdGVyLWluc3RhbmNlLmMwc3FwcmRqZmtqaS5ldS1jZW50cmFsLTEucmRzLmFtYXpvbmF3cy5jb20iLCJhd3NSb2xlIjoiIn0.bm5xIokRoILiYIjjx-NO3bkqzRs8_3j9l3pC4gfmPe0SDvFpkOjxJPc5oRZky-OGNz1dQQRGFgpYDIMz_ruT6kDPtpOrgQ6JHwUe5ksd1zP8JUyh8VWn2fxQEuUl8aQb214CIoYqQUfV53LaUsB9CuNNg6WTqxIUvMozy9m7hn2STsEHFXPThCdtgJ3PkNdVN_bEugAw25K8C55pheft5TM6bocbXNe185Vyr19FHLUlxrdoEj_bawJNodqog2yqNrqnjLvnuD-nD2-2TZHSPTZ7p-DtVbabKkCa1VTqBtY0yiSt9DD8nwb-oge2czh2LJLg9YxmnIQQScaGuFH0lQ",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|nelson|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Draft to Active status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"int\", _.random(0, 100000));",
+							"var status = [\"active\"];",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"",
+							"function randomStatus() {",
+							"  return status[getRandomInt(status.length)];",
+							"}",
+							"",
+							"pm.environment.set(\"vpStatus\", randomStatus());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response URL\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"api/v1/platform/visit-plan/trials/\"+pm.environment.get(\"trialId\")+\"/visit-plan/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.environment.set(\"visitPlanId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJEVVdIbzBnMTFFNHVta3hwcGhtaFFVa190OG1la0FSQWxXN285djRqSUNnIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlJKUHI5R1hhcVNCWnJUM3lHMEZvTF9Yc3pmRjBaZElUQjR0dUdxNEREeWciLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2Njk0Nzg1MTYsImV4cCI6MTY2OTU2NDkxNiwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxOGpibWdyazdXOE9tTzBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY2OTQ3ODUxNSwic3ViIjoiTVNEYXRhRGVzaWduZXJEZXYiLCJhd3NSZWdpb24iOiJldS1jZW50cmFsLTEiLCJzZXNzaW9uUGVybWlzc2lvbnMiOlsiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwiZWRpdFN0YW5kYXJkVmFyaWFibGVzIiwiZWRpdFN0dWR5Tm90aWZpY2F0aW9ucyIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImxpc3RTY2hlZHVsZVRlbXBsYXRlcyIsImxpc3RTaXRlcyIsImxpc3RUcmlhbHMiLCJtYW5hZ2VTY2hlZHVsZVRlbXBsYXRlcyIsIm1hbmFnZVNpdGVzIiwibWFuYWdlVmlzaXRQbGFuIiwidmlld0Zvcm1MaWJyYXJ5Iiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJ2aWV3U3RhbmRhcmRWYXJpYWJsZXMiLCJ2aWV3U3R1ZHkiLCJ2aWV3VGVuYW50Iiwidmlld1RyaWFsRmVhdHVyZXMiLCJ2aWV3VmlzaXRQbGFuTGlicmFyeSJdLCJ0ZW5hbnRVdWlkcyI6WyJmMmFhYzU1Ni0zM2Y0LTA2ZDUtM2NhYi03ZTJiMTJlMGE2NTYiXSwibXVsZVJlZ2lvbiI6ImRlLWMxIiwidGVuYW50Um9sZXMiOlsiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9EYXRhRGVzaWduZXIiXSwidXNlclV1aWQiOiJjMTY5ZDBhZi03ZGY1LTQyODItYTYzMi1kNjhiY2E4NDQ4MTMiLCJ0ZW5hbnRJZCI6Imxva2kiLCJzZXNzaW9uUm9sZXMiOlsiRGF0YURlc2lnbmVyIl0sImRiSG9zdCI6ImRldjEtcGxhdGZvcm0tZ2xvYmFsLXByaW1hcnktY2x1c3Rlci1pbnN0YW5jZS5jMHNxcHJkamZramkuZXUtY2VudHJhbC0xLnJkcy5hbWF6b25hd3MuY29tIiwiYXdzUm9sZSI6ImFybjphd3M6aWFtOjoxMjU5MDA1MDU5ODQ6cm9sZS9kZXYxLWV1LWRlLWxva2ktdGVuYW50LXJvbGUifQ.F1-j0abYbgCB-MPr_NS4IwA7DmiOYG28wyQC-9vi47jfxc4OjaEEXdzpEqc9HXUC0ygKD1-L6kdDC-DoZuWaQnkmcr7X1TzYfrriWzQvrxqHCPFrKmNCZgdaFRYOtzHJYYfyauuHH3N0tbX11-KwWqc0yHj0vv7x7J7G-Yx7EYKs7PikH0ElQyp0IHHOLQt9vtdLyIIkUoY67rk1OzETggZqNusnsG9B82Z64QsidaDg5S-tuBs8kJtkG3mfbMqhjvGkBD-CZfrPNyjHQDmKnBz_6uEmhyEifaxe08h69897jK3ERr9WZg6wz9crrzl3jbcKzBqzNxmW2U3t7ZFjEg",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|mustafa|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"{{visitPlanId}}\",\n    \"title\": \"{{vpTitle}}\",\n    \"status\": \"{{vpStatus}}\",\n    \"description\": \"{{vpDescription}}\",\n    \"version\": \"{{vpVersion}}\",\n    \"protocolVersion\": \"{{vpProtocolVersion}}\",\n    \"expectedVisitPlan\": {\n        \"title\": \"{{vpExpectedVisitPlanTitle}}\",\n        \"econsentVisitStatusAction\": \"{{econsentVisitStatusAction}}\",\n        \"visits\": [\n            {\n                \"title\": \"{{vpExpectedVisitTitle01}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeUNSCHEDULED}}\",\n                \"OID\": \"{{vpExpectedVisitOID01}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder01}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID01}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n            },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID01}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle01}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion01}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder01}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI01}}\",\n                            \"conditions\": []\n                        },\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID02}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle02}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion02}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeEPRO}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder02}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI02}}\",\n                            \"conditions\": [],\n                            \"timeOfDay\": {\n                                        \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n                                    },\n                                    \"expiration\": {\n                                        \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n                                },\n                             \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}}\n                        }\n                    ]\n                }\n            }\n        ]\n    },\n  \"ongoingForms\": {\n        \"id\": \"{{vpOngoingGroupID01}}\",\n    \"groups\": [\n      {\n        \"title\": \"{{vpOngoingGroupTitle01}}\",\n        \"OID\": \"{{vpOngoingGroupOID01}}\",\n        \"displayOrder\": {{vpOngoingGroupDisplayOrder01}},\n        \"forms\": [\n          {\n            \"displayOrder\": {{vpOngoingGroupFormDisplayOrder01}},\n            \"id\": \"{{vpOngoingGroupFormID01}}\",\n            \"title\": \"{{vpOngoingGroupFormTitle01}}\",\n            \"version\": \"{{vpOngoingGroupFormVersion01}}\",\n            \"formType\": \"{{vpOngoingGroupFormTypeECRF}}\"\n          }\n        ]\n      }\n    ]\n  },\n  \"adhocForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpAdhocFormDisplayOrder01}},\n        \"id\": \"{{vpAdhocFormID01}}\",\n        \"title\": \"{{vpAdhocFormTitle01}}\",\n        \"version\": \"{{vpAdhocFormVersion01}}\",\n        \"formType\": \"{{vpAdhocFormTypeEPRO}}\",\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpAdhocSiteID01}}\",\n              \"name\": \"{{vpAdhocSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpAdhocSiteID02}}\",\n              \"name\": \"{{vpAdhocSiteName02}}\"\n            }\n          ]\n        }\n      }\n    ]\n  },\n  \"recurringForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpRecurFormDisplayOrder01}},\n        \"id\": \"{{vpRecurFormID01}}\",\n        \"title\": \"{{vpRecurFormTitle01}}\",\n        \"version\": \"{{vpRecurFormVersion01}}\",\n        \"formType\": \"{{vpRecurFormTypeEPRO}}\",\n        \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}},\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpRecurSiteID01}}\",\n              \"name\": \"{{vpRecurSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpRecurSiteID02}}\",\n              \"name\": \"{{vpRecurSiteName02}}\"\n            }\n          ]\n        },\n        \"frequency\": {\n          \"frequencyType\": \"{{vpFreqDaily}}\",\n          \"trigger\": \"{{vpTriggerPreviousVisit}}\",\n          \"maxOccurence\": {{vpTriggerMaxOccurance}},\n          \"maxOccurenceUnit\": \"{{vpTriggerMaxOccuranceUnit}}\",\n          \"previousVisitDate\": \"{{vpTriggerPreviousVisitDate}}\",\n          \"previousVisitDateVisitOId\": \"{{vpTriggerPreviousVisitDateVisitOId}}\",\n          \"previousVisitDateFormId\": \"{{vpTriggerPreviousVisitDateFormId}}\",\n          \"previousVisitDateFieldId\": \"{{vpTriggerPreviousVisitDateFieldId}}\",\n          \"daysAfterPreviousVisit\": {{vpTriggerDayAfterPreviousVisit}}\n        },\n        \"timeOfDay\": {\n          \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n        },\n        \"expiration\": {\n          \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Active to draft status",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"int\", _.random(0, 100000));",
+							"var status = [\"active\"];",
+							"function getRandomInt(max) {",
+							"  return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"",
+							"function randomStatus() {",
+							"  return status[getRandomInt(status.length)];",
+							"}",
+							"",
+							"pm.environment.set(\"vpStatus\", randomStatus());"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Verify Apply Visit Plan Response Id\", function(){",
+							"    pm.expect(jsonData.id).not.oneOf([null, undefined, \"\"]);",
+							"});",
+							"",
+							"pm.test(\"Verify Visit Plan Response URL\", function () {",
+							"    pm.expect(jsonData.url).to.eql(\"api/v1/platform/visit-plan/trials/\"+pm.environment.get(\"trialId\")+\"/visit-plan/\"+jsonData.id);",
+							"});",
+							"",
+							"pm.environment.set(\"visitPlanId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "client_id",
+						"value": "0oa11f9beep2vvWYF0h8",
+						"type": "text"
+					},
+					{
+						"key": "client_secret",
+						"value": "5cF_YSQ0x2U3UaynKtSkEOgs7p24ikLB1AOgDDn0",
+						"type": "text"
+					},
+					{
+						"key": "tenantRoles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16//DataDesigner\",\"708c4307-0dd6-47c5-8b9b-371cb593ea16//StudyAdmin\",\"94fe8082-eb88-40dd-85f1-00d796d4dc4d//StudyAdmin\",\"0009f7cd-eb6a-4a89-b55f-5a219d6ce103//StudyAdmin\",\"8ae08bfb-db3f-4337-95f5-4243268aa116//StudyAdmin\",\"20874edd-107e-40ef-8865-3359476021ff//StudyAdmin\",\"2ea25b1a-e8d6-4657-93cf-d2dd5382c98a//StudyAdmin\",\"58ae3bb0-9fae-4e74-bd1b-3d36fed601e8//StudyAdmin\",\"483175f7-9336-4037-bfbc-3fc864131aa7//StudyAdmin\",\"2d663cbd-cece-47c8-b3bc-43da2764e1f9//StudyAdmin\",\"cc8cf980-716c-41be-9667-839101e06f5b//StudyAdmin\",\"a39ba5b2-133f-4368-9713-d3aeef312d90//StudyAdmin\",\"78fcf4ac-a160-4393-a657-8e73e518fa2d//StudyAdmin\",\"4ef5ade1-a0fe-49db-91a3-e35606d5dab9//StudyAdmin\",\"691e44e7-4500-4d0b-980e-84b89c85ce48//StudyAdmin\",\"aa6b2712-6062-4519-8f85-102d1eac8617//StudyAdmin\",\"ffea895c-7274-42fb-aa6c-9f7d8d882642//StudyAdmin\",\"be6c8978-ffcc-4858-8d23-c54ca7cd70cb//StudyAdmin\",\"9e0ba333-ce5b-4525-869a-8fcc43281e97//StudyAdmin\",\"83192d07-a94b-42a5-a99a-d7a286d1bb1c//StudyAdmin\",\"50672fd4-1d9c-411b-9994-8e2dadac53d6//StudyAdmin\",\"5ff6c8ed-bbe5-4d8a-a15a-2f3e1733396f//StudyAdmin\",\"b81cfd3a-fa45-4cee-a9a3-2501702b62fd//StudyAdmin\",\"f0a8ea15-1e8a-4065-9738-cf3a7b139208//StudyAdmin\",\"6f72c9ff-d818-451b-b74a-3cf50d007d5d//StudyAdmin\",\"8cdcd95a-455e-4f14-80c5-95bd358b0089//StudyAdmin\",\"de8182da-3c2d-4358-9306-2e19b17b946d//StudyAdmin\",\"a7eb7654-cbc3-4137-8462-2739e14659ae//StudyAdmin\",\"c20d23c8-6d63-4178-9133-856f1663dee6//StudyAdmin\",\"3b7da71b-42a3-4063-9c44-8aab1c150196//StudyAdmin\"]",
+						"type": "text"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[\"manageScheduleTemplates\",\"viewScheduleTemplate\",\"listScheduleTemplates\",\"viewTrial\",\"listTrials\",\"manageSites\",\"manageForms\",\"listForms\",\"viewForm\",\"viewTrialFeatures\",\"manageVisitPlan\",\"viewSites\",\"viewStudies\",\"viewTenants\",\"viewFormLibrary\",\"addFormLibrary\",\"addFormTemplate\",\"editFormTemplate\",\"viewVisitPlanLibrary\",\"addVisitPlanTemplate\",\"editVisitPlanTemplate\",\"applyVisitPlanTemplate\",\"addFormBuilder\",\"addSite\",\"editSites\",\"addUser\",\"editApplyVisitPlanTemplate\",\"editFormBuilder\",\"editStudy\",\"editUser\",\"viewAccessReports\",\"viewFormExports\",\"viewReports\",\"viewUsers\"]",
+						"type": "text"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki",
+						"type": "text"
+					},
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJraWQiOiJEVVdIbzBnMTFFNHVta3hwcGhtaFFVa190OG1la0FSQWxXN285djRqSUNnIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULlJKUHI5R1hhcVNCWnJUM3lHMEZvTF9Yc3pmRjBaZElUQjR0dUdxNEREeWciLCJpc3MiOiJodHRwczovL2RldjEtbG9naW4uczM3ZGV2LmNvbS9vYXV0aDIvZGVmYXVsdCIsImF1ZCI6ImFwaTovL2RlZmF1bHQiLCJpYXQiOjE2Njk0Nzg1MTYsImV4cCI6MTY2OTU2NDkxNiwiY2lkIjoiMG9hMTc2b2VvNDZqODRDMHIwaDgiLCJ1aWQiOiIwMHUxOGpibWdyazdXOE9tTzBoOCIsInNjcCI6WyJtdWxlc29mdF9hdXRob3JpemF0aW9uIiwib3BlbmlkIl0sImF1dGhfdGltZSI6MTY2OTQ3ODUxNSwic3ViIjoiTVNEYXRhRGVzaWduZXJEZXYiLCJhd3NSZWdpb24iOiJldS1jZW50cmFsLTEiLCJzZXNzaW9uUGVybWlzc2lvbnMiOlsiYWRkRm9ybUxpYnJhcnkiLCJhZGRGb3JtVGVtcGxhdGUiLCJhZGRWaXNpdFBsYW5UZW1wbGF0ZSIsImFwcGx5VmlzaXRQbGFuVGVtcGxhdGUiLCJlZGl0Rm9ybVRlbXBsYXRlIiwiZWRpdFN0YW5kYXJkVmFyaWFibGVzIiwiZWRpdFN0dWR5Tm90aWZpY2F0aW9ucyIsImVkaXRWaXNpdFBsYW5UZW1wbGF0ZSIsImxpc3RTY2hlZHVsZVRlbXBsYXRlcyIsImxpc3RTaXRlcyIsImxpc3RUcmlhbHMiLCJtYW5hZ2VTY2hlZHVsZVRlbXBsYXRlcyIsIm1hbmFnZVNpdGVzIiwibWFuYWdlVmlzaXRQbGFuIiwidmlld0Zvcm1MaWJyYXJ5Iiwidmlld1NjaGVkdWxlVGVtcGxhdGUiLCJ2aWV3U3RhbmRhcmRWYXJpYWJsZXMiLCJ2aWV3U3R1ZHkiLCJ2aWV3VGVuYW50Iiwidmlld1RyaWFsRmVhdHVyZXMiLCJ2aWV3VmlzaXRQbGFuTGlicmFyeSJdLCJ0ZW5hbnRVdWlkcyI6WyJmMmFhYzU1Ni0zM2Y0LTA2ZDUtM2NhYi03ZTJiMTJlMGE2NTYiXSwibXVsZVJlZ2lvbiI6ImRlLWMxIiwidGVuYW50Um9sZXMiOlsiNzA4YzQzMDctMGRkNi00N2M1LThiOWItMzcxY2I1OTNlYTE2Ly9EYXRhRGVzaWduZXIiXSwidXNlclV1aWQiOiJjMTY5ZDBhZi03ZGY1LTQyODItYTYzMi1kNjhiY2E4NDQ4MTMiLCJ0ZW5hbnRJZCI6Imxva2kiLCJzZXNzaW9uUm9sZXMiOlsiRGF0YURlc2lnbmVyIl0sImRiSG9zdCI6ImRldjEtcGxhdGZvcm0tZ2xvYmFsLXByaW1hcnktY2x1c3Rlci1pbnN0YW5jZS5jMHNxcHJkamZramkuZXUtY2VudHJhbC0xLnJkcy5hbWF6b25hd3MuY29tIiwiYXdzUm9sZSI6ImFybjphd3M6aWFtOjoxMjU5MDA1MDU5ODQ6cm9sZS9kZXYxLWV1LWRlLWxva2ktdGVuYW50LXJvbGUifQ.F1-j0abYbgCB-MPr_NS4IwA7DmiOYG28wyQC-9vi47jfxc4OjaEEXdzpEqc9HXUC0ygKD1-L6kdDC-DoZuWaQnkmcr7X1TzYfrriWzQvrxqHCPFrKmNCZgdaFRYOtzHJYYfyauuHH3N0tbX11-KwWqc0yHj0vv7x7J7G-Yx7EYKs7PikH0ElQyp0IHHOLQt9vtdLyIIkUoY67rk1OzETggZqNusnsG9B82Z64QsidaDg5S-tuBs8kJtkG3mfbMqhjvGkBD-CZfrPNyjHQDmKnBz_6uEmhyEifaxe08h69897jK3ERr9WZg6wz9crrzl3jbcKzBqzNxmW2U3t7ZFjEg",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "s37-correlation-id",
+						"value": "dev1|mustafa|132c5472-e2fb-4fe7-8725-c18a178e6778",
+						"type": "text"
+					},
+					{
+						"key": "user-uuid",
+						"value": "c6340035-c728-4fed-a5a9-08d9eb38d010",
+						"type": "text"
+					},
+					{
+						"key": "sub",
+						"value": "LokiDataDesignerSaqib",
+						"type": "text"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"DataDesigner\",\" StudyAdmin\"]",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"{{visitPlanId}}\",\n    \"title\": \"{{vpTitle}}\",\n    \"status\": \"{{vpStatus}}\",\n    \"description\": \"{{vpDescription}}\",\n    \"version\": \"{{vpVersion}}\",\n    \"protocolVersion\": \"{{vpProtocolVersion}}\",\n    \"expectedVisitPlan\": {\n        \"title\": \"{{vpExpectedVisitPlanTitle}}\",\n        \"econsentVisitStatusAction\": \"{{econsentVisitStatusAction}}\",\n        \"visits\": [\n            {\n                \"title\": \"{{vpExpectedVisitTitle01}}\",\n                \"visitType\": \"{{vpExpectedVisitTypeUNSCHEDULED}}\",\n                \"OID\": \"{{vpExpectedVisitOID01}}\",\n                \"gateKeeper\": {{vpGateKeeperT}},\n                \"displayOrder\": {{vpExpectedVisitDisplayOrder01}},\n                \"visitUuid\": \"{{vpExpectedVisitUUID01}}\",\n                \"forceFormOrder\": [\n                    {\n                        \"role\": \"{{vpExpectedFFRole}}\",\n                        \"formTypes\": [\n                            \"{{vpExpectedFFType}}\"\n                        ]\n                    }\n                ],\n                \"applyVisit\": {\n                \"visitWindowCalculationType\": \"{{vpExpectedAVCalType03}}\"\n            },\n                \"visitFormList\": {\n                    \"conditions\": [],\n                    \"forms\": [\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID01}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle01}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion01}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeECRF}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder01}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI01}}\",\n                            \"conditions\": []\n                        },\n                        {\n                            \"id\": \"{{vpExpectedVisitFormListFormID02}}\",\n                            \"title\": \"{{vpExpectedVisitFormListFormTitle02}}\",\n                            \"version\": \"{{vpExpectedVisitFormListFormVersion02}}\",\n                            \"formType\": \"{{vpExpectedVisitFormListFormTypeEPRO}}\",\n                            \"displayOrder\": {{vpExpectedVisitFormListDisplayOrder02}},\n                            \"definitionUri\": \"{{vpExpectedVisitFormListDefinationURI02}}\",\n                            \"conditions\": [],\n                            \"timeOfDay\": {\n                                        \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n                                    },\n                                    \"expiration\": {\n                                        \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n                                },\n                             \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}}\n                        }\n                    ]\n                }\n            }\n        ]\n    },\n  \"ongoingForms\": {\n        \"id\": \"{{vpOngoingGroupID01}}\",\n    \"groups\": [\n      {\n        \"title\": \"{{vpOngoingGroupTitle01}}\",\n        \"OID\": \"{{vpOngoingGroupOID01}}\",\n        \"displayOrder\": {{vpOngoingGroupDisplayOrder01}},\n        \"forms\": [\n          {\n            \"displayOrder\": {{vpOngoingGroupFormDisplayOrder01}},\n            \"id\": \"{{vpOngoingGroupFormID01}}\",\n            \"title\": \"{{vpOngoingGroupFormTitle01}}\",\n            \"version\": \"{{vpOngoingGroupFormVersion01}}\",\n            \"formType\": \"{{vpOngoingGroupFormTypeECRF}}\"\n          }\n        ]\n      }\n    ]\n  },\n  \"adhocForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpAdhocFormDisplayOrder01}},\n        \"id\": \"{{vpAdhocFormID01}}\",\n        \"title\": \"{{vpAdhocFormTitle01}}\",\n        \"version\": \"{{vpAdhocFormVersion01}}\",\n        \"formType\": \"{{vpAdhocFormTypeEPRO}}\",\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpAdhocSiteID01}}\",\n              \"name\": \"{{vpAdhocSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpAdhocSiteID02}}\",\n              \"name\": \"{{vpAdhocSiteName02}}\"\n            }\n          ]\n        }\n      }\n    ]\n  },\n  \"recurringForms\": {\n    \"forms\": [\n      {\n        \"displayOrder\": {{vpRecurFormDisplayOrder01}},\n        \"id\": \"{{vpRecurFormID01}}\",\n        \"title\": \"{{vpRecurFormTitle01}}\",\n        \"version\": \"{{vpRecurFormVersion01}}\",\n        \"formType\": \"{{vpRecurFormTypeEPRO}}\",\n        \"allowMultipleSubmit\": {{vpExpectedAllowMultipleSubmit}},\n        \"additionalProperties\": {\n          \"sites\": [\n            {\n              \"id\": \"{{vpRecurSiteID01}}\",\n              \"name\": \"{{vpRecurSiteName01}}\"\n            },\n            {\n              \"id\": \"{{vpRecurSiteID02}}\",\n              \"name\": \"{{vpRecurSiteName02}}\"\n            }\n          ]\n        },\n        \"frequency\": {\n          \"frequencyType\": \"{{vpFreqDaily}}\",\n          \"trigger\": \"{{vpTriggerPreviousVisit}}\",\n          \"maxOccurence\": {{vpTriggerMaxOccurance}},\n          \"maxOccurenceUnit\": \"{{vpTriggerMaxOccuranceUnit}}\",\n          \"previousVisitDate\": \"{{vpTriggerPreviousVisitDate}}\",\n          \"previousVisitDateVisitOId\": \"{{vpTriggerPreviousVisitDateVisitOId}}\",\n          \"previousVisitDateFormId\": \"{{vpTriggerPreviousVisitDateFormId}}\",\n          \"previousVisitDateFieldId\": \"{{vpTriggerPreviousVisitDateFieldId}}\",\n          \"daysAfterPreviousVisit\": {{vpTriggerDayAfterPreviousVisit}}\n        },\n        \"timeOfDay\": {\n          \"timeOfDayType\": \"{{vpExpectedVisitFormListTimeOfDayTypeAllDay}}\"\n        },\n        \"expiration\": {\n          \"formExpirationType\": \"{{vpExpectedVisitFormListExpirationType}}\"\n        }\n      }\n    ]\n  }\n}"
+				},
+				"url": {
+					"raw": "{{protocol}}://{{gpEUInstance}}/{{gpVisitPlanURL}}/trials/{{trialId}}/visit-plan/{{visitPlanId}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{gpEUInstance}}"
+					],
+					"path": [
+						"{{gpVisitPlanURL}}",
+						"trials",
+						"{{trialId}}",
+						"visit-plan",
+						"{{visitPlanId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - Create a Notification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verified responses\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.resourceType).to.eql(\"Notification\");",
+							"    pm.expect(jsonData.status).to.eql(\"completed\");",
+							"    pm.expect(jsonData.payload[0].contentString).to.eql(\"Notification(s) created succesfully\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"conEUInstance\",\"conditional-logic-exp-api-dev1-eu-de.de-c1.cloudhub.io\");",
+							"pm.environment.set(\"conditionalLogicURL\",\"api/v1/platform/conditional-logic\");",
+							"pm.environment.set(\"int\", _.random(1000000000, 5000000000));",
+							"",
+							"function generateString(result) {",
+							"    var result = \"\";",
+							"    for ( var i = 1; i <= characters.length; i++ ) {",
+							"       result += characters.charAt(Math.floor(Math.random() * characters));",
+							"     }",
+							"     return result;",
+							"}",
+							"function getRandomInt(max) {",
+							"   return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"// Notification",
+							"",
+							"pm.environment.set(\"notificationID\", \"d4006205-c0b8-421e-9a7a-1318419\"+getRandomInt(10000)+getRandomInt(9));",
+							"pm.environment.set(\"language\", \"json\");",
+							"pm.environment.set(\"constraintType\", \"Notification\");",
+							"",
+							"// if",
+							"pm.environment.set(\"ifLinkId\", \"MISSING_EDIARIES Threshold\");",
+							"pm.environment.set(\"ifOperatorKey\", \"==\");",
+							"pm.environment.set(\"ifOperatorValue\", \"isEqualTo\");",
+							"pm.environment.set(\"ifOperatorDBKey\", \"==\");",
+							"",
+							"pm.environment.set(\"ifValue\", \"3\");",
+							"pm.environment.set(\"ifNextBlockOperator\", \"nextBlock\");",
+							"pm.environment.set(\"ifGroupID\", \"0\");",
+							"",
+							"//then",
+							"",
+							"pm.environment.set(\"thenLinkId\", \"linkMissing\");",
+							"pm.environment.set(\"thenMetaData\", \"linkMETA\");",
+							"pm.environment.set(\"thenEventKey\", \"MISSING_EDIARIES\");",
+							"pm.environment.set(\"thenEventValue\", \"MISSING_EDIARIES\");",
+							"",
+							"// Notification",
+							"",
+							"pm.environment.set(\"title\", \"Notification: \" +pm.environment.get(\"int\"));",
+							"pm.environment.set(\"type\", \"MISSING_EDIARIES\");",
+							"pm.environment.set(\"templateName\", \"template-Name\");",
+							"pm.environment.set(\"enabled\", true);",
+							"pm.environment.set(\"notiSiteId\",\"f2ecdf36-c50d-4116-8912-a43e0598bf05\");",
+							"pm.environment.set(\"notiFormId\",\"08a97620-5014-4960-a0e8-90ca38040f0c\");",
+							"pm.environment.set(\"recipientRoles\",\"08a97620-5014-4960-a0e8-90ca38040f8c\");",
+							"pm.environment.set(\"recipientEmails\",\"xyz@science37.com\");",
+							"pm.environment.set(\"frequency\",\"CREATION\");",
+							"pm.environment.set(\"missingEDiaryThreshold\", 3);",
+							"pm.environment.set(\"comment\",\"comment\");",
+							"pm.environment.set(\"createdBy\",\"18372f2b-f9a3-4006-8b2d-433d36881e49\");",
+							"pm.environment.set(\"createdOn\",\"2022-10-07T04:52:47Z\");",
+							"pm.environment.set(\"updatedBy\",\"a3e16235-beec-4d7a-9055-e0abbbebc229\");",
+							"pm.environment.set(\"updatedOn\",\"2022-10-09T02:34:25Z\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki"
+					},
+					{
+						"key": "awsRole",
+						"value": "arn:aws:iam::125900505984:role/dev1-eu-de-loki-tenant-role"
+					},
+					{
+						"key": "tenantroles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16/7cfccb5e-1503-4c46-b7d8-d5ff4307add7/Coordinator\"]"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"Coordinator\"]"
+					},
+					{
+						"key": "sessionscope",
+						"value": "[\"site/7cfccb5e-1503-4c46-b7d8-d5ff4307add7\"]"
+					},
+					{
+						"key": "correlationId",
+						"value": "service-proxy|dev2|good|2021-06-25T12:17:59.927Z|2d2faee3-36d1-454c-85fa-cf097d043971"
+					},
+					{
+						"key": "dbhost",
+						"value": "dev1-platform8.cti10lnrh4rb.us-west-2.rds.amazonaws.com"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[   \"createVideoMeeting\",   \"joinVideoMeeting\",   \"viewSite\",   \"listPatients\",   \"viewPatient\",   \"viewPatientSchedule\",   \"managePatients\",   \"listContacts\",   \"viewContact\",   \"manageContacts\",   \"listAttachments\",   \"viewAttachment\",   \"manageAttachments\",   \"listAppointments\",   \"viewAppointment\",   \"manageAppointments\",   \"acceptAppointment\",   \"viewTrial\",   \"listTrials\",   \"listSites\",   \"listStaffUsers\",   \"listRoles\" ]"
+					},
+					{
+						"key": "sub",
+						"value": "0oaw7q68n6yO5Tbhy0h7-nkunkuloL+DEV2CD@science37.com"
+					},
+					{
+						"key": "client_id",
+						"value": "0oaxyact1pC95VriW0h7"
+					},
+					{
+						"key": "client_secret",
+						"value": "raH39eM_WiZBXgxiIiiAaBmRl5wbLZv6BuHZLOt1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    { \n        \"id\": \"{{notificationID}}\",\n        \"language\": \"{{language}}\",\n        \"constraintType\": \"{{constraintType}}\",\n        \"conditionalLogic\": {\n            \"if\": [\n                {\n                    \"linkId\": \"{{ifLinkId}}\",\n                    \"operator\": {\n                        \"key\": \"{{ifOperatorKey}}\",\n                        \"value\": \"{{ifOperatorValue}}\",\n                        \"dbKey\": \"{{ifOperatorDBKey}}\"\n                    },\n                    \"value\": \"{{ifValue}}\",\n                    \"nextBlockOperator\": \"{{ifNextBlockOperator}}\",\n                    \"groupId\": {{ifGroupID}}\n                }\n            ],\n            \"then\": [\n                {\n                    \"event\": {\n                        \"key\": \"{{thenEventKey}}\",\n                        \"value\": \"{{thenEventValue}}\"\n                    },\n                    \"linkId\": \"{{thenLinkId}}\",\n                    \"metadata\": \"{{thenMetaData}}\"\n                }\n            ],\n            \"metadata\": {\n                \"title\": \"{{title}}\",\n                \"type\": \"{{type}}\",\n                \"templateName\": \"{{templateName}}\",\n                \"enabled\": {{enabled}},\n                \"visitPlanId\": \"{{visitPlanId}}\",\n                \"siteIds\": [\n                    \"{{notiSiteId}}\"\n                ],\n                \"formId\": \"{{notiFormId}}\",\n                \"recipient_roles\": [\n                    \"{{recipientRoles}}\"\n                ],\n                \"recipient_emails\": [\n                    \"{{recipientEmails}}\"\n                ],\n                \"frequency\": [\n                    \"{{frequency}}\"\n                ],\n                \"missingEDiaryThreshold\": {{missingEDiaryThreshold}},\n                \"comment\": \"{{comment}}\"\n            }\n        },\n        \"createdBy\": \"{{createdBy}}\",\n        \"createdOn\": \"{{createdOn}}\",\n        \"updatedBy\": \"{{updatedBy}}\",\n        \"updatedOn\": \"{{updatedOn}}\"\n    }\n]"
+				},
+				"url": {
+					"raw": "{{protocol}}://{{conEUInstance}}/{{conditionalLogicURL}}/trials/{{trialId}}/notifications",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{conEUInstance}}"
+					],
+					"path": [
+						"{{conditionalLogicURL}}",
+						"trials",
+						"{{trialId}}",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - Notification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verified responses\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.constraintType).to.eql(\"Notification\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki"
+					},
+					{
+						"key": "awsRole",
+						"value": "arn:aws:iam::125900505984:role/dev1-eu-de-loki-tenant-role"
+					},
+					{
+						"key": "tenantroles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16/7cfccb5e-1503-4c46-b7d8-d5ff4307add7/Coordinator\"]"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"Coordinator\"]"
+					},
+					{
+						"key": "sessionscope",
+						"value": "[\"site/7cfccb5e-1503-4c46-b7d8-d5ff4307add7\"]"
+					},
+					{
+						"key": "correlationId",
+						"value": "service-proxy|dev2|good|2021-06-25T12:17:59.927Z|2d2faee3-36d1-454c-85fa-cf097d043971"
+					},
+					{
+						"key": "dbhost",
+						"value": "dev1-platform8.cti10lnrh4rb.us-west-2.rds.amazonaws.com"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[   \"createVideoMeeting\",   \"joinVideoMeeting\",   \"viewSite\",   \"listPatients\",   \"viewPatient\",   \"viewPatientSchedule\",   \"managePatients\",   \"listContacts\",   \"viewContact\",   \"manageContacts\",   \"listAttachments\",   \"viewAttachment\",   \"manageAttachments\",   \"listAppointments\",   \"viewAppointment\",   \"manageAppointments\",   \"acceptAppointment\",   \"viewTrial\",   \"listTrials\",   \"listSites\",   \"listStaffUsers\",   \"listRoles\" ]"
+					},
+					{
+						"key": "sub",
+						"value": "0oaw7q68n6yO5Tbhy0h7-nkunkuloL+DEV2CD@science37.com"
+					},
+					{
+						"key": "client_id",
+						"value": "0oaxyact1pC95VriW0h7"
+					},
+					{
+						"key": "client_secret",
+						"value": "raH39eM_WiZBXgxiIiiAaBmRl5wbLZv6BuHZLOt1"
+					}
+				],
+				"url": {
+					"raw": "{{protocol}}://{{conEUInstance}}/{{conditionalLogicURL}}/trials/{{trialId}}/notifications/{{notificationID}}",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{conEUInstance}}"
+					],
+					"path": [
+						"{{conditionalLogicURL}}",
+						"trials",
+						"{{trialId}}",
+						"notifications",
+						"{{notificationID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - Update a Notification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verified responses\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.resourceType).to.eql(\"Notification\");",
+							"    pm.expect(jsonData.status).to.eql(\"completed\");",
+							"    pm.expect(jsonData.payload[0].contentString).to.eql(\"Notification(s) updated succesfully\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"conEUInstance\",\"conditional-logic-exp-api-dev1-eu-de.de-c1.cloudhub.io\");",
+							"pm.environment.set(\"conditionalLogicURL\",\"api/v1/platform/conditional-logic\");",
+							"pm.environment.set(\"int\", _.random(1000000000, 5000000000));",
+							"",
+							"function generateString(result) {",
+							"    var result = \"\";",
+							"    for ( var i = 1; i <= characters.length; i++ ) {",
+							"       result += characters.charAt(Math.floor(Math.random() * characters));",
+							"     }",
+							"     return result;",
+							"}",
+							"function getRandomInt(max) {",
+							"   return Math.floor(Math.random() * Math.floor(max));",
+							"}",
+							"// Notification",
+							"",
+							"pm.environment.set(\"language\", \"json\");",
+							"pm.environment.set(\"constraintType\", \"Notification\");",
+							"",
+							"// if",
+							"pm.environment.set(\"ifLinkId\", \"MISSING_EDIARIES Threshold\");",
+							"pm.environment.set(\"ifOperatorKey\", \"==\");",
+							"pm.environment.set(\"ifOperatorValue\", \"isEqualTo\");",
+							"pm.environment.set(\"ifOperatorDBKey\", \"==\");",
+							"",
+							"pm.environment.set(\"ifValue\", \"3\");",
+							"pm.environment.set(\"ifNextBlockOperator\", \"nextBlock\");",
+							"pm.environment.set(\"ifGroupID\", \"0\");",
+							"",
+							"//then",
+							"",
+							"pm.environment.set(\"thenLinkId\", \"linkMissing\");",
+							"pm.environment.set(\"thenMetaData\", \"linkMETA\");",
+							"pm.environment.set(\"thenEventKey\", \"MISSING_EDIARIES\");",
+							"pm.environment.set(\"thenEventValue\", \"MISSING_EDIARIES\");",
+							"",
+							"// Notification",
+							"",
+							"pm.environment.set(\"title-updated\", \"Notification: \" +pm.environment.get(\"int\") + \" - Updated\");",
+							"pm.environment.set(\"type\", \"MISSING_EDIARIES\");",
+							"pm.environment.set(\"templateName-updated\", \"template-Name\" + \" - Updated\");",
+							"pm.environment.set(\"enabled\", true);",
+							"pm.environment.set(\"notiSiteId\",\"f2ecdf36-c50d-4116-8912-a43e0598bf05\");",
+							"pm.environment.set(\"notiFormId\",\"08a97620-5014-4960-a0e8-90ca38040f0c\");",
+							"pm.environment.set(\"recipientRoles\",\"08a97620-5014-4960-a0e8-90ca38040f8c\");",
+							"pm.environment.set(\"recipientEmails\",\"xyz@science37.com\");",
+							"pm.environment.set(\"frequency\",\"CREATION\");",
+							"pm.environment.set(\"missingEDiaryThreshold\", 3);",
+							"pm.environment.set(\"comment\",\"comment\");",
+							"pm.environment.set(\"createdBy\",\"18372f2b-f9a3-4006-8b2d-433d36881e49\");",
+							"pm.environment.set(\"createdOn\",\"2022-10-07T04:52:47Z\");",
+							"pm.environment.set(\"updatedBy\",\"a3e16235-beec-4d7a-9055-e0abbbebc229\");",
+							"pm.environment.set(\"updatedOn\",\"2022-10-09T02:34:25Z\");",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "content-type",
+						"value": "application/json"
+					},
+					{
+						"key": "tenantId",
+						"value": "loki"
+					},
+					{
+						"key": "awsRole",
+						"value": "arn:aws:iam::125900505984:role/dev1-eu-de-loki-tenant-role"
+					},
+					{
+						"key": "tenantroles",
+						"value": "[\"708c4307-0dd6-47c5-8b9b-371cb593ea16/7cfccb5e-1503-4c46-b7d8-d5ff4307add7/Coordinator\"]"
+					},
+					{
+						"key": "sessionroles",
+						"value": "[\"Coordinator\"]"
+					},
+					{
+						"key": "sessionscope",
+						"value": "[\"site/7cfccb5e-1503-4c46-b7d8-d5ff4307add7\"]"
+					},
+					{
+						"key": "correlationId",
+						"value": "service-proxy|dev2|good|2021-06-25T12:17:59.927Z|2d2faee3-36d1-454c-85fa-cf097d043971"
+					},
+					{
+						"key": "dbhost",
+						"value": "dev1-platform8.cti10lnrh4rb.us-west-2.rds.amazonaws.com"
+					},
+					{
+						"key": "sessionPermissions",
+						"value": "[   \"createVideoMeeting\",   \"joinVideoMeeting\",   \"viewSite\",   \"listPatients\",   \"viewPatient\",   \"viewPatientSchedule\",   \"managePatients\",   \"listContacts\",   \"viewContact\",   \"manageContacts\",   \"listAttachments\",   \"viewAttachment\",   \"manageAttachments\",   \"listAppointments\",   \"viewAppointment\",   \"manageAppointments\",   \"acceptAppointment\",   \"viewTrial\",   \"listTrials\",   \"listSites\",   \"listStaffUsers\",   \"listRoles\" ]"
+					},
+					{
+						"key": "sub",
+						"value": "0oaw7q68n6yO5Tbhy0h7-nkunkuloL+DEV2CD@science37.com"
+					},
+					{
+						"key": "client_id",
+						"value": "0oaxyact1pC95VriW0h7"
+					},
+					{
+						"key": "client_secret",
+						"value": "raH39eM_WiZBXgxiIiiAaBmRl5wbLZv6BuHZLOt1"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    { \n        \"id\": \"{{notificationID}}\",\n        \"language\": \"{{language}}\",\n        \"constraintType\": \"{{constraintType}}\",\n        \"conditionalLogic\": {\n            \"if\": [\n                {\n                    \"linkId\": \"{{ifLinkId}}\",\n                    \"operator\": {\n                        \"key\": \"{{ifOperatorKey}}\",\n                        \"value\": \"{{ifOperatorValue}}\",\n                        \"dbKey\": \"{{ifOperatorDBKey}}\"\n                    },\n                    \"value\": \"{{ifValue}}\",\n                    \"nextBlockOperator\": \"{{ifNextBlockOperator}}\",\n                    \"groupId\": {{ifGroupID}}\n                }\n            ],\n            \"then\": [\n                {\n                    \"event\": {\n                        \"key\": \"{{thenEventKey}}\",\n                        \"value\": \"{{thenEventValue}}\"\n                    },\n                    \"linkId\": \"{{thenLinkId}}\",\n                    \"metadata\": \"{{thenMetaData}}\"\n                }\n            ],\n            \"metadata\": {\n                \"title\": \"{{title-updated}}\",\n                \"type\": \"{{type}}\",\n                \"templateName\": \"{{templateName-upddated}}\",\n                \"enabled\": {{enabled}},\n                \"visitPlanId\": \"{{visitPlanId}}\",\n                \"siteIds\": [\n                    \"{{notiSiteId}}\"\n                ],\n                \"formId\": \"{{notiFormId}}\",\n                \"recipient_roles\": [\n                    \"{{recipientRoles}}\"\n                ],\n                \"recipient_emails\": [\n                    \"{{recipientEmails}}\"\n                ],\n                \"frequency\": [\n                    \"{{frequency}}\"\n                ],\n                \"missingEDiaryThreshold\": {{missingEDiaryThreshold}},\n                \"comment\": \"{{comment}}\"\n            }\n        },\n        \"createdBy\": \"{{createdBy}}\",\n        \"createdOn\": \"{{createdOn}}\",\n        \"updatedBy\": \"{{updatedBy}}\",\n        \"updatedOn\": \"{{updatedOn}}\"\n    }\n]"
+				},
+				"url": {
+					"raw": "{{protocol}}://{{conEUInstance}}/{{conditionalLogicURL}}/trials/{{trialId}}/notifications",
+					"protocol": "{{protocol}}",
+					"host": [
+						"{{conEUInstance}}"
+					],
+					"path": [
+						"{{conditionalLogicURL}}",
+						"trials",
+						"{{trialId}}",
+						"notifications"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
