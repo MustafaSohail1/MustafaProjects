@@ -1,0 +1,448 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'io.fabric'
+
+// For Epoxy
+kapt {
+    correctErrorTypes = true
+}
+
+android {
+    compileSdkVersion BuildConfig.compileSdk
+    defaultConfig {
+        applicationId BuildConfig.applicationId
+        minSdkVersion BuildConfig.minSdk
+        targetSdkVersion BuildConfig.targetSdk
+        versionCode BuildConfig.versionCode
+        versionName BuildConfig.versionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        dev {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    def build_param = "${build}"
+
+    if (build_param != "dev") {
+        android.variantFilter { variant ->
+            if (variant.buildType.name == 'dev') {
+                variant.setIgnore(true)
+            }
+        }
+    } else {
+        android.variantFilter { variant ->
+            if (variant.buildType.name != 'dev') {
+                variant.setIgnore(true)
+            }
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    dataBinding {
+        enabled = true
+    }
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/main/java', 'src/main/java/libsFol'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation project(path: ':core')
+    implementation project(path: ':repository')
+    implementation project(path: ':mvrxlite')
+    implementation project(path: ':about')
+
+    implementation Libraries.kotlinStdlib
+
+    implementation Libraries.appCompat
+    implementation Libraries.constraintLayout
+    implementation Libraries.legacySupportV4
+    implementation Libraries.lifecycle
+    implementation Libraries.material
+    implementation Libraries.coreKtx
+    implementation Libraries.preference
+    implementation Libraries.legacyPreferenceV14
+
+    implementation Libraries.navigation
+    implementation Libraries.navigationUi
+
+    implementation Libraries.koinAndroid
+    implementation Libraries.koinScope
+    implementation Libraries.koinViewModel
+
+    implementation Libraries.rxJava
+    implementation Libraries.rxAndroid
+    implementation Libraries.rxKotlin
+    implementation Libraries.rxBinding
+    implementation Libraries.rxRelay
+
+    implementation Libraries.glide
+    implementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
+    implementation files('src/main/java/libsFol/cglib-nodep-3.2.4.jar')
+    implementation files('src/main/java/libsFol/commons-codec-1.10.jar')
+    implementation files('src/main/java/libsFol/commons-exec-1.3.jar')
+    implementation files('src/main/java/libsFol/commons-io-2.5.jar')
+    implementation files('src/main/java/libsFol/commons-lang3-3.4.jar')
+    implementation files('src/main/java/libsFol/commons-logging-1.2.jar')
+    implementation files('src/main/java/libsFol/cssparser-0.9.20.jar')
+    implementation files('src/main/java/libsFol/gson-2.3.1.jar')
+    implementation files('src/main/java/libsFol/guava-19.0.jar')
+    implementation files('src/main/java/libsFol/hamcrest-core-1.3.jar')
+    implementation files('src/main/java/libsFol/htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/htmlunit-core-js-2.23.jar')
+    implementation files('src/main/java/libsFol/httpclient-4.5.2.jar')
+    implementation files('src/main/java/libsFol/httpcore-4.4.4.jar')
+    implementation files('src/main/java/libsFol/httpmime-4.5.2.jar')
+    implementation files('src/main/java/libsFol/jetty-io-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jetty-util-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jna-4.1.0.jar')
+    implementation files('src/main/java/libsFol/jna-platform-4.1.0.jar')
+    implementation files('src/main/java/libsFol/junit-4.12.jar')
+    implementation files('src/main/java/libsFol/neko-htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/netty-3.5.7.Final.jar')
+    implementation files('src/main/java/libsFol/phantomjsdriver-1.3.0.jar')
+    implementation files('src/main/java/libsFol/sac-1.3.jar')
+    implementation files('src/main/java/libsFol/selenium-api-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-chrome-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-edge-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-firefox-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-ie-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-opera-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-remote-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-safari-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-support-3.0.1.jar')
+    implementation files('src/main/java/libsFol/serializer-2.7.2.jar')
+    implementation files('src/main/java/libsFol/websocket-api-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-client-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-common-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/xalan-2.7.2.jar')
+    implementation files('src/main/java/libsFol/xercesImpl-2.11.0.jar')
+    implementation files('src/main/java/libsFol/xml-apis-1.4.01.jar')
+    implementation files('src/main/java/libsFol/cglib-nodep-3.2.4.jar')
+    implementation files('src/main/java/libsFol/commons-codec-1.10.jar')
+    implementation files('src/main/java/libsFol/commons-exec-1.3.jar')
+    implementation files('src/main/java/libsFol/commons-io-2.5.jar')
+    implementation files('src/main/java/libsFol/commons-lang3-3.4.jar')
+    implementation files('src/main/java/libsFol/commons-logging-1.2.jar')
+    implementation files('src/main/java/libsFol/cssparser-0.9.20.jar')
+    implementation files('src/main/java/libsFol/gson-2.3.1.jar')
+    implementation files('src/main/java/libsFol/guava-19.0.jar')
+    implementation files('src/main/java/libsFol/hamcrest-core-1.3.jar')
+    implementation files('src/main/java/libsFol/htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/htmlunit-core-js-2.23.jar')
+    implementation files('src/main/java/libsFol/httpclient-4.5.2.jar')
+    implementation files('src/main/java/libsFol/httpcore-4.4.4.jar')
+    implementation files('src/main/java/libsFol/httpmime-4.5.2.jar')
+    implementation files('src/main/java/libsFol/jcommander-1.82.jar')
+    implementation files('src/main/java/libsFol/jetty-io-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jetty-util-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jna-4.1.0.jar')
+    implementation files('src/main/java/libsFol/jna-platform-4.1.0.jar')
+    implementation files('src/main/java/libsFol/jsr305-3.0.2.jar')
+    implementation files('src/main/java/libsFol/junit-4.12.jar')
+    implementation files('src/main/java/libsFol/neko-htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/netty-3.5.7.Final.jar')
+    implementation files('src/main/java/libsFol/phantomjsdriver-1.3.0.jar')
+    implementation files('src/main/java/libsFol/sac-1.3.jar')
+    implementation files('src/main/java/libsFol/selenium-api-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-chrome-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-edge-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-firefox-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-ie-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-opera-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-remote-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-safari-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-support-3.0.1.jar')
+    implementation files('src/main/java/libsFol/serializer-2.7.2.jar')
+    implementation files('src/main/java/libsFol/slf4j-api-1.7.36.jar')
+    implementation files('src/main/java/libsFol/testng-7.6.1.jar')
+    implementation files('src/main/java/libsFol/websocket-api-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-client-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-common-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/xalan-2.7.2.jar')
+    implementation files('src/main/java/libsFol/xercesImpl-2.11.0.jar')
+    implementation files('src/main/java/libsFol/xml-apis-1.4.01.jar')
+    implementation files('src/main/java/libsFol/cglib-nodep-3.2.4.jar')
+    implementation files('src/main/java/libsFol/commons-codec-1.10.jar')
+    implementation files('src/main/java/libsFol/commons-exec-1.3.jar')
+    implementation files('src/main/java/libsFol/commons-io-2.5.jar')
+    implementation files('src/main/java/libsFol/commons-lang3-3.4.jar')
+    implementation files('src/main/java/libsFol/commons-logging-1.2.jar')
+    implementation files('src/main/java/libsFol/cssparser-0.9.20.jar')
+    implementation files('src/main/java/libsFol/gson-2.3.1.jar')
+    implementation files('src/main/java/libsFol/guava-19.0.jar')
+    implementation files('src/main/java/libsFol/hamcrest-core-1.3.jar')
+    implementation files('src/main/java/libsFol/htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/htmlunit-core-js-2.23.jar')
+    implementation files('src/main/java/libsFol/httpclient-4.5.2.jar')
+    implementation files('src/main/java/libsFol/httpcore-4.4.4.jar')
+    implementation files('src/main/java/libsFol/httpmime-4.5.2.jar')
+    implementation files('src/main/java/libsFol/jcommander-1.82.jar')
+    implementation files('src/main/java/libsFol/jetty-io-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jetty-util-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jna-4.1.0.jar')
+    implementation files('src/main/java/libsFol/jna-platform-4.1.0.jar')
+    implementation files('src/main/java/libsFol/jsr305-3.0.2.jar')
+    implementation files('src/main/java/libsFol/junit-4.12.jar')
+    implementation files('src/main/java/libsFol/neko-htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/netty-3.5.7.Final.jar')
+    implementation files('src/main/java/libsFol/phantomjsdriver-1.3.0.jar')
+    implementation files('src/main/java/libsFol/sac-1.3.jar')
+    implementation files('src/main/java/libsFol/selenium-api-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-chrome-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-edge-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-firefox-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-ie-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-opera-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-remote-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-safari-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-support-2.8.0.jar')
+    implementation files('src/main/java/libsFol/selenium-support-3.0.1.jar')
+    implementation files('src/main/java/libsFol/serializer-2.7.2.jar')
+    implementation files('src/main/java/libsFol/slf4j-api-1.7.36.jar')
+    implementation files('src/main/java/libsFol/testng-7.6.1.jar')
+    implementation files('src/main/java/libsFol/websocket-api-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-client-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-common-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/xalan-2.7.2.jar')
+    implementation files('src/main/java/libsFol/xercesImpl-2.11.0.jar')
+    implementation files('src/main/java/libsFol/xml-apis-1.4.01.jar')
+    implementation files('src/main/java/libsFol/async-http-client-2.12.3.jar')
+    implementation files('src/main/java/libsFol/async-http-client-netty-utils-2.12.3.jar')
+    implementation files('src/main/java/libsFol/auto-common-1.2.jar')
+    implementation files('src/main/java/libsFol/auto-service-1.0.1.jar')
+    implementation files('src/main/java/libsFol/auto-service-annotations-1.0.1.jar')
+    implementation files('src/main/java/libsFol/byte-buddy-1.12.18.jar')
+    implementation files('src/main/java/libsFol/cglib-nodep-3.2.4.jar')
+    implementation files('src/main/java/libsFol/checker-qual-3.12.0.jar')
+    implementation files('src/main/java/libsFol/commons-codec-1.10.jar')
+    implementation files('src/main/java/libsFol/commons-exec-1.3.jar')
+    implementation files('src/main/java/libsFol/commons-io-2.5.jar')
+    implementation files('src/main/java/libsFol/commons-lang3-3.4.jar')
+    implementation files('src/main/java/libsFol/commons-logging-1.2.jar')
+    implementation files('src/main/java/libsFol/cssparser-0.9.20.jar')
+    implementation files('src/main/java/libsFol/error_prone_annotations-2.11.0.jar')
+    implementation files('src/main/java/libsFol/failsafe-3.3.0.jar')
+    implementation files('src/main/java/libsFol/failureaccess-1.0.1.jar')
+    implementation files('src/main/java/libsFol/gson-2.3.1.jar')
+    implementation files('src/main/java/libsFol/guava-19.0.jar')
+    implementation files('src/main/java/libsFol/guava-31.1-jre.jar')
+    implementation files('src/main/java/libsFol/hamcrest-core-1.3.jar')
+    implementation files('src/main/java/libsFol/htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/htmlunit-core-js-2.23.jar')
+    implementation files('src/main/java/libsFol/httpclient-4.5.2.jar')
+    implementation files('src/main/java/libsFol/httpcore-4.4.4.jar')
+    implementation files('src/main/java/libsFol/httpmime-4.5.2.jar')
+    implementation files('src/main/java/libsFol/j2objc-annotations-1.3.jar')
+    implementation files('src/main/java/libsFol/jakarta.activation-1.2.2.jar')
+    implementation files('src/main/java/libsFol/jcommander-1.82.jar')
+    implementation files('src/main/java/libsFol/jetty-io-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jetty-util-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/jna-4.1.0.jar')
+    implementation files('src/main/java/libsFol/jna-platform-4.1.0.jar')
+    implementation files('src/main/java/libsFol/jsr305-3.0.2.jar')
+    implementation files('src/main/java/libsFol/jtoml-2.0.0.jar')
+    implementation files('src/main/java/libsFol/junit-4.12.jar')
+    implementation files('src/main/java/libsFol/neko-htmlunit-2.23.jar')
+    implementation files('src/main/java/libsFol/netty-3.5.7.Final.jar')
+    implementation files('src/main/java/libsFol/netty-buffer-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-codec-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-codec-http-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-codec-socks-4.1.60.Final.jar')
+    implementation files('src/main/java/libsFol/netty-common-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-handler-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-handler-proxy-4.1.60.Final.jar')
+    implementation files('src/main/java/libsFol/netty-reactive-streams-2.0.4.jar')
+    implementation files('src/main/java/libsFol/netty-resolver-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-transport-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-transport-classes-epoll-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-transport-classes-kqueue-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/netty-transport-native-epoll-4.1.60.Final-linux-x86_64.jar')
+    implementation files('src/main/java/libsFol/netty-transport-native-kqueue-4.1.60.Final-osx-x86_64.jar')
+    implementation files('src/main/java/libsFol/netty-transport-native-unix-common-4.1.84.Final.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-api-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-api-logs-1.19.0-alpha.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-context-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-exporter-common-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-exporter-logging-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-sdk-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-sdk-common-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-sdk-extension-autoconfigure-1.19.0-alpha.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-sdk-extension-autoconfigure-spi-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-sdk-logs-1.19.0-alpha.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-sdk-metrics-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-sdk-trace-1.19.0.jar')
+    implementation files('src/main/java/libsFol/opentelemetry-semconv-1.19.0-alpha.jar')
+    implementation files('src/main/java/libsFol/phantomjsdriver-1.3.0.jar')
+    implementation files('src/main/java/libsFol/reactive-streams-1.0.3.jar')
+    implementation files('src/main/java/libsFol/sac-1.3.jar')
+    implementation files('src/main/java/libsFol/selenium-api-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-api-4.7.1.jar')
+    implementation files('src/main/java/libsFol/selenium-chrome-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-edge-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-firefox-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-http-4.7.1.jar')
+    implementation files('src/main/java/libsFol/selenium-ie-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-json-4.7.1.jar')
+    implementation files('src/main/java/libsFol/selenium-manager-4.7.1.jar')
+    implementation files('src/main/java/libsFol/selenium-opera-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-remote-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-remote-driver-4.7.1.jar')
+    implementation files('src/main/java/libsFol/selenium-safari-driver-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-support-2.8.0.jar')
+    implementation files('src/main/java/libsFol/selenium-support-3.0.1.jar')
+    implementation files('src/main/java/libsFol/selenium-support-4.7.1.jar')
+    implementation files('src/main/java/libsFol/serializer-2.7.2.jar')
+    implementation files('src/main/java/libsFol/slf4j-api-1.7.30.jar')
+    implementation files('src/main/java/libsFol/slf4j-api-1.7.36.jar')
+    implementation files('src/main/java/libsFol/testng-7.6.1.jar')
+    implementation files('src/main/java/libsFol/websocket-api-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-client-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/websocket-common-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libsFol/xalan-2.7.2.jar')
+    implementation files('src/main/java/libsFol/xercesImpl-2.11.0.jar')
+    implementation files('src/main/java/libsFol/xml-apis-1.4.01.jar')
+    implementation files('src/main/java/libs/async-http-client-2.12.3.jar')
+    implementation files('src/main/java/libs/async-http-client-netty-utils-2.12.3.jar')
+    implementation files('src/main/java/libs/auto-common-1.2.jar')
+    implementation files('src/main/java/libs/auto-service-1.0.1.jar')
+    implementation files('src/main/java/libs/auto-service-annotations-1.0.1.jar')
+    implementation files('src/main/java/libs/byte-buddy-1.12.18.jar')
+    implementation files('src/main/java/libs/cglib-nodep-3.2.4.jar')
+    implementation files('src/main/java/libs/checker-qual-3.12.0.jar')
+    implementation files('src/main/java/libs/commons-codec-1.10.jar')
+    implementation files('src/main/java/libs/commons-exec-1.3.jar')
+    implementation files('src/main/java/libs/commons-io-2.5.jar')
+    implementation files('src/main/java/libs/commons-lang3-3.4.jar')
+    implementation files('src/main/java/libs/commons-logging-1.2.jar')
+    implementation files('src/main/java/libs/cssparser-0.9.20.jar')
+    implementation files('src/main/java/libs/error_prone_annotations-2.11.0.jar')
+    implementation files('src/main/java/libs/failsafe-3.3.0.jar')
+    implementation files('src/main/java/libs/failureaccess-1.0.1.jar')
+    implementation files('src/main/java/libs/gson-2.3.1.jar')
+    implementation files('src/main/java/libs/guava-19.0.jar')
+    implementation files('src/main/java/libs/guava-31.1-jre.jar')
+    implementation files('src/main/java/libs/hamcrest-core-1.3.jar')
+    implementation files('src/main/java/libs/htmlunit-2.23.jar')
+    implementation files('src/main/java/libs/htmlunit-core-js-2.23.jar')
+    implementation files('src/main/java/libs/httpclient-4.5.2.jar')
+    implementation files('src/main/java/libs/httpcore-4.4.4.jar')
+    implementation files('src/main/java/libs/httpmime-4.5.2.jar')
+    implementation files('src/main/java/libs/j2objc-annotations-1.3.jar')
+    implementation files('src/main/java/libs/jakarta.activation-1.2.2.jar')
+    implementation files('src/main/java/libs/jcommander-1.82.jar')
+    implementation files('src/main/java/libs/jetty-io-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libs/jetty-util-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libs/jna-4.1.0.jar')
+    implementation files('src/main/java/libs/jna-platform-4.1.0.jar')
+    implementation files('src/main/java/libs/jsr305-3.0.2.jar')
+    implementation files('src/main/java/libs/jtoml-2.0.0.jar')
+    implementation files('src/main/java/libs/junit-4.12.jar')
+    implementation files('src/main/java/libs/neko-htmlunit-2.23.jar')
+    implementation files('src/main/java/libs/netty-3.5.7.Final.jar')
+    implementation files('src/main/java/libs/netty-buffer-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-codec-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-codec-http-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-codec-socks-4.1.60.Final.jar')
+    implementation files('src/main/java/libs/netty-common-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-handler-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-handler-proxy-4.1.60.Final.jar')
+    implementation files('src/main/java/libs/netty-reactive-streams-2.0.4.jar')
+    implementation files('src/main/java/libs/netty-resolver-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-transport-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-transport-classes-epoll-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-transport-classes-kqueue-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/netty-transport-native-epoll-4.1.60.Final-linux-x86_64.jar')
+    implementation files('src/main/java/libs/netty-transport-native-kqueue-4.1.60.Final-osx-x86_64.jar')
+    implementation files('src/main/java/libs/netty-transport-native-unix-common-4.1.84.Final.jar')
+    implementation files('src/main/java/libs/opentelemetry-api-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-api-logs-1.19.0-alpha.jar')
+    implementation files('src/main/java/libs/opentelemetry-context-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-exporter-common-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-exporter-logging-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-sdk-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-sdk-common-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-sdk-extension-autoconfigure-1.19.0-alpha.jar')
+    implementation files('src/main/java/libs/opentelemetry-sdk-extension-autoconfigure-spi-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-sdk-logs-1.19.0-alpha.jar')
+    implementation files('src/main/java/libs/opentelemetry-sdk-metrics-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-sdk-trace-1.19.0.jar')
+    implementation files('src/main/java/libs/opentelemetry-semconv-1.19.0-alpha.jar')
+    implementation files('src/main/java/libs/phantomjsdriver-1.3.0.jar')
+    implementation files('src/main/java/libs/reactive-streams-1.0.3.jar')
+    implementation files('src/main/java/libs/sac-1.3.jar')
+    implementation files('src/main/java/libs/selenium-api-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-api-4.7.1.jar')
+    implementation files('src/main/java/libs/selenium-chrome-driver-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-edge-driver-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-firefox-driver-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-http-4.7.1.jar')
+    implementation files('src/main/java/libs/selenium-ie-driver-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-json-4.7.1.jar')
+    implementation files('src/main/java/libs/selenium-manager-4.7.1.jar')
+    implementation files('src/main/java/libs/selenium-opera-driver-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-remote-driver-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-remote-driver-4.7.1.jar')
+    implementation files('src/main/java/libs/selenium-safari-driver-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-support-2.8.0.jar')
+    implementation files('src/main/java/libs/selenium-support-3.0.1.jar')
+    implementation files('src/main/java/libs/selenium-support-4.7.1.jar')
+    implementation files('src/main/java/libs/serializer-2.7.2.jar')
+    implementation files('src/main/java/libs/slf4j-api-1.7.30.jar')
+    implementation files('src/main/java/libs/slf4j-api-1.7.36.jar')
+    implementation files('src/main/java/libs/testng-7.6.1.jar')
+    implementation files('src/main/java/libs/websocket-api-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libs/websocket-client-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libs/websocket-common-9.2.15.v20160210.jar')
+    implementation files('src/main/java/libs/xalan-2.7.2.jar')
+    implementation files('src/main/java/libs/xercesImpl-2.11.0.jar')
+    implementation files('src/main/java/libs/xml-apis-1.4.01.jar')
+    kapt Libraries.glideCompiler
+
+    implementation Libraries.lemniscate
+    implementation Libraries.epoxy
+    kapt Libraries.epoxyProcessor
+
+    testImplementation Libraries.junit
+    testImplementation Libraries.mockitoCore
+    androidTestImplementation Libraries.androidxTestRunner
+    androidTestImplementation Libraries.espressoCore
+
+    implementation Libraries.firebaseCore
+    implementation Libraries.crashlytics
+    implementation Libraries.okhttp
+
+}
+
+apply plugin: 'com.google.gms.google-services'
