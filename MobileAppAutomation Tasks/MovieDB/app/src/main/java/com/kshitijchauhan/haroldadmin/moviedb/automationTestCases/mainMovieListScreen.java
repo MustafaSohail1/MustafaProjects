@@ -9,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
+import io.cucumber.java.en.When;
+
 
 public class mainMovieListScreen {
    @Before
@@ -16,6 +18,7 @@ public class mainMovieListScreen {
        System.out.println("success");
     }
 @Test
+@When("^I click on a first movie")
     public void movieListScreen() {
     System.setProperty("web-driver.chrome.driver", "../chromedriver.exe");
     WebDriver driver= new ChromeDriver();
@@ -24,32 +27,32 @@ public class mainMovieListScreen {
 
     WebDriverWait wait = new WebDriverWait(driver,10);
 
-    WebElement openMovie =  wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#popular_scroller > div > div:nth-child(1) > div.image > div.wrapper > a")));
+
+    WebElement openMovie =  wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("/html[1]/body[1]/div[1]/main[1]/section[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[1]/section[1]/div[1]/div[1]/div[1]/div[1]/div[1]/a[1]/img[1]")));
     openMovie.click();
 
-    WebElement validateName =  wait.until(ExpectedConditions.elementToBeClickable(By.tagName("a")));
-    validateName.getAttribute("href=\"/movie/668461-slumberland\"");
-    validateName.click();
-
-    System.out.println("You are on the Main Movie List Screen ");
+    System.out.println("You are on the Main Movie List Screen");
     }
 
     @Test
+    @When("^I click on a filter dropdown")
     public void filterMovies() {
         System.setProperty("web-driver.chrome.driver", "../chromedriver.exe");
         WebDriver driver= new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get("https://www.themoviedb.org");
+        driver.get("https://www.themoviedb.org/movie");
 
         WebDriverWait wait = new WebDriverWait(driver,10);
 
-        WebElement openMovie =  wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("#popular_scroller > div > div:nth-child(1) > div.image > div.wrapper > a")));
-        openMovie.click();
+        WebElement popularityFilterDropdown =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='k-input' AND @role='option']")));
+        popularityFilterDropdown.click();
 
-        WebElement validateName =  wait.until(ExpectedConditions.elementToBeClickable(By.tagName("a")));
-        validateName.getAttribute("href=\"/movie/668461-slumberland\"");
-        validateName.click();
+        WebElement popularityFilterDropdownAsc =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='k-item' AND @role='option']")));
+        popularityFilterDropdownAsc.click();
 
-        System.out.println("You are on the Main Movie List Screen ");
+        WebElement btnSearch =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[@class='load_more'")));
+        btnSearch.click();
+
+        System.out.println("You are on the Top Popular Movie List Screen ");
     }
 }
