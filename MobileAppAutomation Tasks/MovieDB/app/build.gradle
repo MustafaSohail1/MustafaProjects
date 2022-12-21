@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
-apply plugin: 'io.fabric'
+apply plugin: 'com.android.application'
 
 // For Epoxy
 kapt {
@@ -11,15 +11,14 @@ kapt {
 }
 
 android {
-    compileSdkVersion BuildConfig.compileSdk
+    compileSdkVersion 33
     defaultConfig {
-        applicationId BuildConfig.applicationId
-        minSdkVersion BuildConfig.minSdk
-        targetSdkVersion BuildConfig.targetSdk
-        versionCode BuildConfig.versionCode
-        versionName BuildConfig.versionName
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.useSupportLibrary = true
+        applicationId "com.kshitijchauhan.haroldadmin.moviedb"
+        minSdkVersion 21
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         debug {
@@ -27,7 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         dev {
@@ -67,7 +66,7 @@ android {
     sourceSets {
         main {
             java {
-                srcDirs 'src/main/java', 'src/main/java/libsFol', 'src/main/java/3', 'src/main/java/automationTestCases', 'src/main/java/cucumberFeatures'
+                srcDirs 'src/main/java', 'src/main/java/libsFol', 'src/main/java/3', 'src/main/java/automationTestCases', 'src/main/java/cucumberFeatures', 'src/main/java/pageObjects', 'src/main/java/pageObjects1'
             }
         }
     }
@@ -106,9 +105,9 @@ dependencies {
     implementation Libraries.rxRelay
 
     implementation Libraries.glide
-    implementation 'junit:junit:4.12'
-    implementation 'junit:junit:4.12'
-    implementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.13.2'
+    implementation 'junit:junit:4.13.2'
+    implementation 'junit:junit:4.13.2'
     implementation files('src/main/java/libsFol/cglib-nodep-3.2.4.jar')
     implementation files('src/main/java/libsFol/commons-codec-1.10.jar')
     implementation files('src/main/java/libsFol/commons-exec-1.3.jar')

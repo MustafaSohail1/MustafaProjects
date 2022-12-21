@@ -1,6 +1,5 @@
 package com.kshitijchauhan.haroldadmin.moviedb.automationTestCases;
 
-import org.junit.Before;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,15 +12,13 @@ import io.cucumber.java.en.When;
 
 
 public class mainMovieListScreen {
-   @Before
-    public void driverSetting(){
-       System.out.println("success");
-    }
+    public WebDriver driver;
+
 @Test
 @When("^I click on a first movie")
     public void movieListScreen() {
     System.setProperty("web-driver.chrome.driver", "../chromedriver.exe");
-    WebDriver driver= new ChromeDriver();
+     driver= new ChromeDriver();
     driver.manage().window().maximize();
     driver.get("https://www.themoviedb.org");
 
@@ -38,7 +35,7 @@ public class mainMovieListScreen {
     @When("^I click on a filter dropdown")
     public void filterMovies() {
         System.setProperty("web-driver.chrome.driver", "../chromedriver.exe");
-        WebDriver driver= new ChromeDriver();
+         driver= new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://www.themoviedb.org/movie");
 
@@ -50,9 +47,9 @@ public class mainMovieListScreen {
         WebElement popularityFilterDropdownAsc =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='k-item' AND @role='option']")));
         popularityFilterDropdownAsc.click();
 
-        WebElement btnSearch =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[@class='load_more'")));
+        WebElement btnSearch =  wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[@class='load_more']")));
         btnSearch.click();
 
-        System.out.println("You are on the Top Popular Movie List Screen ");
+        System.out.println("You are on the Top Popular Movie List Screen");
     }
 }

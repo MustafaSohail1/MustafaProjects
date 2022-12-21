@@ -9,13 +9,10 @@ kapt {
 }
 
 android {
-    compileSdkVersion BuildConfig.compileSdk
-
+    compileSdkVersion 33
     defaultConfig {
-        minSdkVersion BuildConfig.minSdk
-        targetSdkVersion BuildConfig.targetSdk
-        versionCode BuildConfig.versionCode
-        versionName BuildConfig.versionName
+        minSdkVersion 21
+        targetSdkVersion 33
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -60,6 +57,7 @@ dependencies {
     implementation Libraries.epoxy
     implementation Libraries.epoxyDatabinding
     kapt Libraries.epoxyProcessor
+
 }
 
 repositories {

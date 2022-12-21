@@ -4,11 +4,11 @@ object BuildConfig {
     const val googleServices = "4.2.0"
     const val fabricTools = "1.29.0"
 
-    const val compileSdk = 28
+    const val compileSdk = 33
     const val minSdk = 21
-    const val targetSdk = 28
+    const val targetSdk = 33
 
     const val applicationId = "com.kshitijchauhan.haroldadmin.moviedb"
-    const val versionCode = 15
-    const val versionName = "0.8"
+    const val versionCode = 1
+    const val versionName = "1.0"
 }
